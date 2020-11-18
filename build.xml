@@ -1,0 +1,97 @@
+<project name="tetris" default="run" basedir=".">
+<property name="app.name" value="Tetris"/>
+<property name="app.version" value="0.1"/>
+<property name="app.fullname" value="${app.name}-${app.version}"/>
+<property name="build.home" value="${basedir}/build"/>
+<property name="dist.home" value="${basedir}/dist"/>
+<property name="docs.home" value="${basedir}/docs"/>
+<property name="src.home" value="${basedir}/src"/>
+<property name="lib.home" value="${basedir}/lib"/>
+<property name="javac.version" value="1.8"/>
+<property name="javac.encoding" value="UTF-8"/>
+<!--
+ ==================== Compile options =========================== 
+-->
+<property name="compile.debug" value="true"/>
+<property name="compile.deprecation" value="false"/>
+<property name="compile.optimize" value="true"/>
+<!--
+ ==================== Compilation Classpath =========================== 
+-->
+<path id="compile.classpath">
+<fileset dir="${lib.home}">
+<include name="**/*.jar"/>
+</fileset>
+</path>
+<!--
+ ==================== All Target ====================================== 
+-->
+<target name="all" depends="clean,compile" description="Clean build and dist directories, then compile"/>
+<!--
+ ==================== Clean Target ==================================== 
+-->
+<target name="clean" description="Delete old build and dist directories">
+<delete dir="${build.home}"/>
+<delete dir="${build.test.home}"/>
+<delete dir="${dist.home}"/>
+</target>
+<!--
+ ==================== Prepare Target ================================== 
+-->
+<target name="prepare">
+<mkdir dir="${build.home}"/>
+<mkdir dir="${dist.home}"/>
+</target>
+<!--
+ ==================== Compile Target ================================== 
+-->
+<target name="compile" depends="prepare" description="Compile Java sources">
+<javac srcdir="${src.home}" destdir="${build.home}" debug="${compile.debug}" deprecation="${compile.deprecation}" optimize="${compile.optimize}" source="${javac.version}" encoding="${javac.encoding}">
+<classpath refid="compile.classpath"/>
+</javac>
+<!-- Copy application resources -->
+<copy todir="${build.home}">
+<fileset dir="${src.home}" excludes="**/*.java"/>
+</copy>
+</target>
+<!--
+ ==================== Dist Target ===================================== 
+-->
+<target name="dist" depends="clean,compile,javadoc" description="Create binary distribution">
+<copy todir="${dist.home}/lib">
+<fileset dir="${lib.home}"/>
+</copy>
+<!-- Create application JAR file -->
+<jar jarfile="${dist.home}/${app.fullname}.jar" basedir="${build.home}">
+<manifest>
+<attribute name="Main-Class" value="jeu.Main"/>
+<!--
+ <attribute name="Class-Path" value="xxxxx.jar" /> 
+-->
+</manifest>
+</jar>
+<!--
+ Attention : copie ad-hoc pour satisfaire imm�diatement une mise � jour de d�pendance, car le projet "jeuAssemblage" a besoin de cette librairie 
+-->
+<copy file="${dist.home}/${app.fullname}.jar" todir="${basedir}/../jeuAssemblage/lib"/>
+</target>
+<!--
+ ==================== Javadoc Target ================================== 
+-->
+<target name="javadoc" depends="compile" description="Create Javadoc API documentation">
+<mkdir dir="${docs.home}"/>
+<javadoc sourcepath="${src.home}" destdir="${docs.home}" packagenames="*">
+<classpath>
+<fileset dir="${lib.home}">
+<include name="**/*.jar"/>
+</fileset>
+</classpath>
+</javadoc>
+</target>
+<!--
+ ==================== Run Target ================================== 
+-->
+<target name="run" depends="dist">
+<java jar="${dist.home}/${app.fullname}.jar" fork="true"/>
+</target>
+</project>
