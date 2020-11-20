@@ -2,20 +2,22 @@ package jeu.vue;
 
 import javax.swing.*;
 
-import jeu.model.Piece;
 
-
-public class Case extends JLabel{
+public class Case extends JLabel {
 
     private String currentPiece = null;
-    
-    public Case(){
+
+    public Case() {
 
     }
-    
-    public Case(String currentPiece){
+
+    public Case(String currentPiece) {
         this.currentPiece = currentPiece;
     }
+
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
     public String getCurrentPiece() {
         return currentPiece;

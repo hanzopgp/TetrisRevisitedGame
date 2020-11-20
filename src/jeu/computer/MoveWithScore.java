@@ -12,6 +12,10 @@ public class MoveWithScore {
         this.scoreDiff = scoreDiff;
     }
 
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
+
     public int getIndexPiece() {
         return indexPiece;
     }

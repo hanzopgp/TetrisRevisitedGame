@@ -1,8 +1,9 @@
 package jeu.controller;
 
 import jeu.Main;
-import jeu.model.PieceInterface;
 import jeu.model.Board;
+import jeu.factory.PieceInterface;
+import jeu.save.SaveStorage;
 import jeu.vue.MainWindow;
 
 import java.util.ArrayList;
@@ -12,52 +13,54 @@ import static jeu.controller.MainController.scannerIntLimit;
 
 public class BoardController {
 
-    private Board board;
-    private PieceInterface piece;
-    private int gamemode;
+    private final Board board;
 
     public BoardController(Board model, int gamemode) {
         this.board = model;
-        this.gamemode = gamemode;
-        if(this.gamemode == 2){
+        if (gamemode == 2) {
             this.makePlateauView();
-        }else{
+        } else {
             this.makePlateauTerminal();
         }
     }
 
-    public static Board definePlateau(){
+    public static Board definePlateau(SaveStorage saveStorage, String playerName) {
         //Choix difficulte du jeu
         System.out.println("Choisissez une difficulte :\n(1) Chilling\n(2) Easy\n(3) Medium\n(4) Hard\n(5) Impossible");
-        int difficulty = scannerIntLimit(new Scanner(System.in),  1, 5);
+        int difficulty = scannerIntLimit(new Scanner(System.in), 1, 5);
         System.out.println("---> Vous avez choisit " + difficulty + "  !");
         System.out.println("=============== DEBUT DE LA PARTIE ===============");
-        switch(difficulty){
-            case 1 :
-                return new Board(28, 28);
-            case 2 :
-                return new Board(25, 25);
-            case 3 :
-                return new Board(22, 22);
-            case 4 :
-                return new Board(19, 19);
-            case 5 :
-                return new Board(16, 16);
-            default :
+        switch (difficulty) {
+            case 1:
+                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 28, 28));
+                return new Board(28, 28, saveStorage);
+            case 2:
+                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 25, 25));
+                return new Board(25, 25, saveStorage);
+            case 3:
+                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 22, 22));
+                return new Board(22, 22, saveStorage);
+            case 4:
+                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 19, 19));
+                return new Board(19, 19, saveStorage);
+            case 5:
+                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 16, 16));
+                return new Board(16, 16, saveStorage);
+            default:
                 throw new IllegalStateException("Unexpected value: " + difficulty);
         }
     }
 
-    public void makePlateauView(){
-        MainWindow window = new MainWindow("Tetris - v1.0", 600, 800, this.board);
+    public void makePlateauView() {
+        MainWindow window = new MainWindow("Tetris - v1.0", 800, 800, this.board);
         GUIController controle = new GUIController(window);
         window.addKeyListener(controle);
         window.addMouseListener(controle);
     }
 
-    public void makePlateauTerminal(){
+    public void makePlateauTerminal() {
         //On met les pieces dans le board
-        for(int i = 0; i < Main.MAX_NB_PIECE_ON_BOARD; i++){
+        for (int i = 0; i < Main.MAX_NB_PIECE_ON_BOARD; i++) {
             this.board.addRandomPiece();
         }
         //Premier affichage
@@ -67,17 +70,19 @@ public class BoardController {
         System.out.println();
         //Boucle de jeu
         int nbMove = 0;
-        while(nbMove < Main.NB_MOVE_MAX_TERMINAL) {
+        while (nbMove < Main.NB_MOVE_MAX_TERMINAL) {
             nbMove++;
             //Choix piece que l'on veut manipuler
             System.out.println("Choisissez une pièce a manipuler : ");
             ArrayList<PieceInterface> listPiece = board.getListPiece();
-            for(int i = 1; i < listPiece.size() + 1; i++){ //Affichage en decalage, simplification pour l'utilisateur
-                System.out.print("("+(i)+") Piece : " + listPiece.get(i-1).getFilling() + "  |  ");
-                if(i%3==0){System.out.println();}
+            for (int i = 1; i < listPiece.size() + 1; i++) { //Affichage en decalage, simplification pour l'utilisateur
+                System.out.print("(" + (i) + ") Piece : " + listPiece.get(i - 1).getFilling() + "  |  ");
+                if (i % 3 == 0) {
+                    System.out.println();
+                }
             }
             System.out.println();
-            int pieceChosen = scannerIntLimit(new Scanner(System.in),1, listPiece.size()) - 1;
+            int pieceChosen = scannerIntLimit(new Scanner(System.in), 1, listPiece.size()) - 1;
             PieceInterface currentPiece = listPiece.get(pieceChosen);
             //Affichage score
             int score = board.evaluate();
@@ -85,7 +90,7 @@ public class BoardController {
             System.out.println("---> Aire la plus grand : " + score + " cases, de type : " + type);
             //Choix rotation ou translation
             System.out.println("Voulez-vous :\n(1) Roter une pièce\n(2) Translater une pièce");
-            int actionChosen = scannerIntLimit(new Scanner(System.in),1, 2);
+            int actionChosen = scannerIntLimit(new Scanner(System.in), 1, 2);
             String strAc = actionChosen == 1 ? "Rotation" : "Translation";
             System.out.println("---> Vous avez choisit : " + strAc);
             //Rotation
@@ -105,7 +110,7 @@ public class BoardController {
             else if (actionChosen == 2) {
                 //Choix direction translation
                 System.out.println("Choisissez un deplacement :\n(1) Deplacement vers le haut\n(2) Deplacement vers le bas\n(3) Deplacement vers la gauche\n(4) Deplacement vers la droite");
-                int direction = scannerIntLimit(new Scanner(System.in),  1, 4);
+                int direction = scannerIntLimit(new Scanner(System.in), 1, 4);
                 System.out.println("---> Vous avez choisit l'option numero : " + direction);
                 this.board.translatePiece(direction, currentPiece);
                 System.out.flush();

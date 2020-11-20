@@ -41,6 +41,7 @@
 <target name="prepare">
 <mkdir dir="${build.home}"/>
 <mkdir dir="${dist.home}"/>
+<mkdir dir="${lib.home}"/>
 </target>
 <!--
  ==================== Compile Target ================================== 

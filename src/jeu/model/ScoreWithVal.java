@@ -1,6 +1,8 @@
 package jeu.model;
 
-public class ScoreWithVal {
+import java.io.Serializable;
+
+public class ScoreWithVal implements Serializable {
 
     private int score, x, y;
 
@@ -9,6 +11,10 @@ public class ScoreWithVal {
         this.x = x;
         this.y = y;
     }
+
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
     public int getScore() {
         return score;
