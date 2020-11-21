@@ -1,8 +1,19 @@
 package jeu.save;
 
+import jeu.Main;
+
 import java.io.*;
 
 public class SaveWriteRead {
+
+    public static void deleteSave(){
+        File f = new File(Main.FILE_NAME);
+        if(f.delete()){
+            System.out.println("Fichier " + f + " supprime avec succes !");
+        }else{
+            System.out.println("Nous n'avons pas reussit a supprimer le fichier");
+        }
+    }
 
     public static void writeFile(String fileName, SaveStorage saveStorage) throws IOException {
         File f = new File(fileName);

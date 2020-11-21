@@ -26,8 +26,9 @@ public class Save implements Serializable {
     private int cptMaxPieceOnBoard;
     ArrayList<ScoreWithVal> listSwv;
     private int currentScore;
+    private int nbMovePlayed;
 
-    public Save(SaveStorage saveStorage, String playerName, int id, int nbLines, int nbColumns, ArrayList<ArrayList<String>> board, int currentScore, ArrayList<PieceInterface> listPiece, ArrayList<String> listFilling, int cptMaxPieceOnBoard, ArrayList<ScoreWithVal> listSwv) {
+    public Save(SaveStorage saveStorage, String playerName, int id, int nbLines, int nbColumns, ArrayList<ArrayList<String>> board, int currentScore, ArrayList<PieceInterface> listPiece, ArrayList<String> listFilling, int cptMaxPieceOnBoard, ArrayList<ScoreWithVal> listSwv, int nbMovePlayed) {
 
         this.id = id;
 
@@ -41,6 +42,7 @@ public class Save implements Serializable {
         this.listFilling = listFilling;
         this.cptMaxPieceOnBoard = cptMaxPieceOnBoard;
         this.listSwv = listSwv;
+        this.nbMovePlayed = nbMovePlayed;
 
         saveStorage.addSave(this);
     }
@@ -54,6 +56,7 @@ public class Save implements Serializable {
         str += "+ Nombre de lignes : " + getNbLines() + "\n";
         str += "+ Nombre de colonnes : " + getNbColumns() + "\n";
         str += "+ Score : " + getCurrentScore() + "\n";
+        str += "+ Coups joues : " + getNbMovePlayed() + "\n";
         str += "++++++++++++++++++++++++++++++++++++++++++++++++++\n";
         return str;
     }
@@ -61,6 +64,10 @@ public class Save implements Serializable {
     /*==============================*/
     /*===== GETTER & SETTERS =======*/
     /*==============================*/
+
+    public int getNbMovePlayed() { return nbMovePlayed; }
+
+    public void setNbMovePlayed(int nbMovePlayed) { this.nbMovePlayed = nbMovePlayed; }
 
     public int getSaveNumber() { return saveNumber; }
 

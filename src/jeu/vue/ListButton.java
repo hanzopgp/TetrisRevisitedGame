@@ -23,23 +23,29 @@ public class ListButton extends JPanel{
         this.vue = vue;
         this.score = score;
         this.window = window;
-        this.setLayout(new GridLayout(5, 1, 5, 5));
+        this.setLayout(new GridLayout(9, 1, 5, 5));
         this.setBackground(Color.WHITE);
-        JButton save = new JButton("Save");
-        JButton load = new JButton("Load derniere partie");
-        JButton newGame = new JButton("Nouvelle Partie");
+        JButton newGame = new JButton("Reset");
         JButton newConfig = new JButton("Nouvelle Configuration");
+        JButton load = new JButton("Charger une partie");
+        JButton save = new JButton("Sauvegarder");
+        JButton deleteSave = new JButton("Supprimer les saves et quitter");
         JButton endGame = new JButton("Finir la partie");
+        JButton leaveGame = new JButton("Quitter le jeu");
         save.addActionListener(this.window);
         load.addActionListener(this.window);
         newGame.addActionListener(this.window);
         newConfig.addActionListener(this.window);
         endGame.addActionListener(this.window);
-        this.add(save);
-        this.add(load);
+        deleteSave.addActionListener(this.window);
+        leaveGame.addActionListener(this.window);
         this.add(newGame);
         this.add(newConfig);
+        this.add(load);
+        this.add(save);
+        this.add(deleteSave);
         this.add(endGame);
+        this.add(leaveGame);
     }
 
     public boolean getIsOver(){

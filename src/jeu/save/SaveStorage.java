@@ -7,14 +7,40 @@ import java.util.ArrayList;
 
 public class SaveStorage implements Serializable {
 
-    private final ArrayList<Save> listSave;
+    private ArrayList<Save> listSave;
 
     public SaveStorage() {
-        listSave = new ArrayList<>();
+        this.listSave = new ArrayList<>();
     }
 
     public void addSave(Save save) {
         this.listSave.add(save);
+    }
+
+    public boolean hasAlreadyBoard(ArrayList<ArrayList<String>> board){
+        if(this.listSave.size() > 0){
+            for(Save save : this.listSave){
+                for(int i = 0; i < save.getBoard().size(); i++){
+                    for(int j = 0; j < save.getBoard().get(i).size(); j++){
+                        String element = save.getBoard().get(i).get(j);
+                        String element2 = board.get(i).get(j);
+                        //System.out.println("e1 : " + element);
+                        //System.out.println("e2 : " + element2);
+                        if(!element.equals(element2)){
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public void deleteAll() {
+        listSave = new ArrayList<>();
+        SaveWriteRead.deleteSave();
     }
 
     public Board getSavedBoardByNumber(int number) {

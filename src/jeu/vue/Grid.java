@@ -53,40 +53,40 @@ public class Grid extends JPanel {
     public static Color setPieceColor(String filling) {
         switch (filling) {
             case "[a]":
-            case "[j]":
-            case "[s]":
-                return Color.RED;
             case "[b]":
-            case "[k]":
-            case "[t]":
-                return Color.BLUE;
             case "[c]":
-            case "[l]":
-            case "[u]":
-                return Color.YELLOW;
-            case "[d]":
-            case "[m]":
-            case "[v]":
-                return Color.GREEN;
-            case "[e]":
-            case "[n]":
-            case "[w]":
-                return Color.GRAY;
-            case "[f]":
-            case "[x]":
-            case "[o]":
-                return Color.MAGENTA;
-            case "[g]":
-            case "[p]":
-            case "[y]":
-                return Color.ORANGE;
-            case "[h]":
-            case "[q]":
-            case "[z]":
-                return Color.pink;
-            case "[i]":
-            case "[r]":
                 return Color.white;
+            case "[d]":
+            case "[e]":
+            case "[f]":
+                return Color.yellow;
+            case "[g]":
+            case "[h]":
+            case "[i]":
+                return Color.orange;
+            case "[j]":
+            case "[k]":
+            case "[l]":
+                return Color.pink;
+            case "[m]":
+            case "[n]":
+            case "[o]":
+                return Color.red;
+            case "[p]":
+            case "[q]":
+            case "[r]":
+                return Color.green;
+            case "[s]":
+            case "[t]":
+            case "[u]":
+                return Color.blue;
+            case "[v]":
+            case "[w]":
+            case "[x]":
+                return Color.black;
+            case "[y]":
+            case "[z]":
+                return Color.gray;
             default:
                 return Color.CYAN;
         }
@@ -94,6 +94,10 @@ public class Grid extends JPanel {
 
     public void setBoard(Board board){
         this.board = board;
+    }
+
+    public Board getBoard() {
+        return board;
     }
 
     public void update() {

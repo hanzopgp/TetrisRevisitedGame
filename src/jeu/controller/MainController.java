@@ -1,5 +1,6 @@
 package jeu.controller;
 
+import jeu.Main;
 import jeu.model.Board;
 import jeu.save.SaveStorage;
 
@@ -22,7 +23,7 @@ public class MainController {
         String str = gamemode == 1 ? "terminal" : "graphique";
         System.out.println("---> Vous avez choisit l'affichage : " + str);
         if (gamemode == 1) {
-            System.out.println("---> Vous avez le droit a 50 coups avant la fin de la partie !");
+            System.out.println("---> Vous avez le droit a " + Main.NB_MOVE_MAX_TERMINAL + " coups avant la fin de la partie !");
         } //Si affichage terminal la partie finit apres 50 coups joues
         this.constructGame(playerName, gamemode, saveStorage);
     }

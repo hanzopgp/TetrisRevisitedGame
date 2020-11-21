@@ -1,16 +1,28 @@
 package jeu.model;
 
 import jeu.Main;
+import jeu.computer.Move;
 import jeu.factory.*;
 import jeu.save.Save;
 import jeu.save.SaveStorage;
 import jeu.save.SaveWriteRead;
+
+import java.awt.event.*;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Board {
+
+    private boolean demoMode = false;
+    private boolean isOver = false;
+    private boolean pieceAdded = false;
+    private boolean isPlaying = false;
+    private boolean newGame = false;
+    private PieceInterface pieceFocused;
+    private int nbMove;
+    private boolean isSolving = false;
 
     private SaveStorage saveStorage;
 
@@ -29,6 +41,7 @@ public class Board {
     private int currentScore;
 
     public Board(int nbColumns, int nbLines, SaveStorage saveStorage) {
+        this.nbMove = 0;
         this.saveStorage = saveStorage;
         this.id = nextId.incrementAndGet();
         this.cptMaxPieceOnBoard = 0;
@@ -55,17 +68,85 @@ public class Board {
         }
     }
 
-    public void saveBoard(int nbSave, SaveStorage saveStorage){
-        if(saveStorage != null) {
-            nbSave += saveStorage.getSize();
+    public void fillBoardHello(int nbLines){
+
+        //RANDOM FILLING
+//        ArrayList<ArrayList<String>> board = new ArrayList<>();
+//        for (int i = 0; i < nbColumns; i++) {
+//            ArrayList<String> line = new ArrayList<>();
+//            board.add(line);
+//            for (int j = 0; j < nbLines; j++) {
+//                Random rand = new Random();
+//                line.add("["+this.listFilling.get(rand.nextInt(this.listFilling.size()))+"]");
+//            }
+//        }
+//        this.board = board;
+
+        //SPIRAL FILLING
+        int n = nbLines;
+        int[][] spiral = new int[n][n];
+        int value = 1;
+        int minCol = 0;
+        int maxCol = n-1;
+        int minLine = 0;
+        int maxLine = n-1;
+        while (value <= n*n) {
+            ArrayList<String> line = new ArrayList<>();
+            board.add(line);
+            for (int i = minCol; i <= maxCol; i++) {
+                spiral[minLine][i] = value;
+                value++;
+            }
+            for (int i = minLine+1; i <= maxLine; i++) {
+                spiral[i][maxCol] = value;
+                value++;
+            }
+            for (int i = maxCol-1; i >= minCol; i--) {
+                spiral[maxLine][i] = value;
+                value++;
+            }
+            for (int i = maxLine-1; i >= minLine+1; i--) {
+                spiral[i][minCol] = value;
+                value++;
+            }
+            minCol++;
+            minLine++;
+            maxCol--;
+            maxLine--;
         }
-        Save save = new Save(saveStorage, getPlayerName(), nbSave, getNbLines(),
-                getNbColumns(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv());
-        try {
-            SaveWriteRead.writeFile("save.txt", saveStorage);
-            System.out.println("PARTIE SAUVEGUARDE");
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        ArrayList<ArrayList<String>> board = new ArrayList<>();
+        for (int[] ints : spiral) {
+            ArrayList<String> lines = new ArrayList<>();
+            for (int j = 0; j < spiral.length; j++) {
+                //System.out.print(spiral[i][j]+ "\t");
+                lines.add("[" + listFilling.get(ints[j] % 26) + "]");
+            }
+            board.add(lines);
+            //System.out.println();
+        }
+        this.board = board;
+    }
+
+    public void saveBoard(int nbSave, SaveStorage saveStorage){
+        if(!saveStorage.hasAlreadyBoard(getBoard())){
+            if(this.currentScore > 0){
+                if(saveStorage != null) {
+                    nbSave += saveStorage.getSize();
+                }
+                Save save = new Save(saveStorage, getPlayerName(), nbSave, getNbLines(),
+                        getNbColumns(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv(), 45);
+                try {
+                    SaveWriteRead.writeFile("save.txt", saveStorage);
+                    System.out.println("PARTIE SAUVEGUARDE");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+            else{
+                System.out.println("PARTIE NON SAUVEGUARDE CAR SCORE NUL");
+            }
+        }else{
+            System.out.println("PARTIE NON SAUVEGUARDE CAR DEJA DANS LE FICHIER");
         }
     }
 
@@ -177,11 +258,13 @@ public class Board {
         }
     }
 
-    public void rotatePiece(boolean direction, PieceInterface piece) {
+    public boolean rotatePiece(boolean direction, PieceInterface piece) {
         piece.rotate(direction);
         if (!(this.addPiece(piece))) {
             piece.rotate(!(direction));
+            return false;
         }
+        return true;
     }
 
     public boolean translatePiece(int direction, PieceInterface piece) {
@@ -243,6 +326,19 @@ public class Board {
         System.out.println("=============== FIN DE LA PARTIE ===============");
     }
 
+    public void movePlus(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_S:
+            case KeyEvent.VK_E:
+            case KeyEvent.VK_A:
+            case KeyEvent.VK_D:
+            case KeyEvent.VK_Q:
+            case KeyEvent.VK_Z:
+                this.nbMove++;
+                break;
+        }
+    }
+
     @Override
     public String toString() {
         for (int i = 0; i < this.nbLines; i++) {
@@ -254,7 +350,79 @@ public class Board {
         return "";
     }
 
-    //PARTIE EVALUATION SCORE
+    /*=======================*/
+    /*===== PARTIE IA =======*/
+    /*=======================*/
+
+    public Board getCopy(){
+        Board copyBoard = new Board(this.nbColumns, this.nbLines, this.saveStorage);
+        copyBoard.setBoard(this.board);
+        copyBoard.setListPiece(this.listPiece);
+        return copyBoard;
+    }
+
+    public void makeMove(Move move){
+        switch (move.getTypeMove()){
+            case "haut" :
+                this.translatePiece(1, move.getPiece());
+            case "bas" :
+                this.translatePiece(2, move.getPiece());
+            case "gauche" :
+                this.translatePiece(3, move.getPiece());
+            case "droite" :
+                this.translatePiece(4, move.getPiece());
+            case "trueRotation" :
+                this.rotatePiece(true, move.getPiece());
+            case "falseRotation" :
+                this.rotatePiece(false, move.getPiece());
+        }
+    }
+
+    public ArrayList<Move> getValidMoves(){
+        ArrayList<Move> validMoves = new ArrayList<>();
+        for(PieceInterface piece : this.listPiece){
+            //translations valides
+            for(int i = 1; i < 5; i++){
+                Board copyBoard = this.getCopy();
+                boolean valid = copyBoard.translatePiece(i, piece);
+                if(valid){
+                    validMoves.add(new Move(piece, this.tradDirection(i)));
+                }
+            }
+            //rotations valides
+            Board copyBoard = this.getCopy();
+            boolean valid = copyBoard.rotatePiece(true, piece);
+            if(valid){
+                validMoves.add(new Move(piece, "trueRotation"));
+            }
+            copyBoard = this.getCopy();
+            valid = copyBoard.rotatePiece(false, piece);
+            if(valid){
+                validMoves.add(new Move(piece, "falseRotation"));
+            }
+        }
+        System.out.println("test");
+        return validMoves;
+    }
+
+    public String tradDirection(int direction){
+        switch(direction){
+            case 1 :
+                return "haut";
+            case 2 :
+                return "bas";
+            case 3 :
+                return "gauche";
+            case 4 :
+                return "droite";
+            default:
+                throw new IllegalStateException("Unexpected value: " + direction);
+        }
+    }
+
+    /*=====================================*/
+    /*===== PARTIE EVALUATION SCORE =======*/
+    /*=====================================*/
 
     public int evaluate() {
         int currentScore = areaMax(getMatrix());
@@ -362,6 +530,14 @@ public class Board {
     /*===== GETTER & SETTERS =======*/
     /*==============================*/
 
+    public boolean getDemoMode() {
+        return this.demoMode;
+    }
+
+    public void setDemoMode(boolean demoMode) {
+        this.demoMode = demoMode;
+    }
+
     public ArrayList<ScoreWithVal> getListSwv() { return listSwv; }
 
     public String getPlayerName() {
@@ -462,6 +638,62 @@ public class Board {
 
     public void setSaveStorage(SaveStorage saveStorage) {
         this.saveStorage = saveStorage;
+    }
+
+    public int getNbMove() {
+        return this.nbMove;
+    }
+    
+    public PieceInterface getPieceFocused() {
+        return this.pieceFocused;
+    }
+
+    public boolean getIsOver(){
+        return this.isOver;
+    }
+
+    public boolean getAdded(){
+        return this.pieceAdded;
+    }
+
+    public boolean getIsPlaying(){
+        return this.isPlaying;
+    }
+
+    public boolean getNewGame(){
+        return this.newGame;
+    }
+
+    public boolean getIsSolving(){
+        return this.isSolving;
+    }
+    
+    public void setPieceFocused(PieceInterface pieceFocused) {
+        this.pieceFocused = pieceFocused;
+    }
+
+    public void setNewGame(boolean newGame) {
+        this.newGame = newGame;
+    }
+
+    public void setOver(boolean isOver) {
+        this.isOver = isOver;
+    }
+
+    public void setPieceAdded(boolean pieceAdded) {
+        this.pieceAdded = pieceAdded;
+    }
+
+    public void setPlaying(boolean isPlaying) {
+        this.isPlaying = isPlaying;
+    }
+
+    public void setSolving(boolean isSolving) {
+        this.isSolving = isSolving;
+    }
+
+    public void setNbMove(int nbMove) {
+        this.nbMove = nbMove;
     }
 
 }
