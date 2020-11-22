@@ -3,19 +3,14 @@ package jeu.vue;
 import jeu.controller.SaveController;
 import jeu.model.Board;
 import jeu.Main;
-import jeu.controller.GUIController;
 import jeu.save.Save;
-import jeu.save.SaveStorage;
-import jeu.save.SaveWriteRead;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.IOException;
 
 public class MainWindow extends JFrame implements ActionListener{
 
@@ -23,9 +18,9 @@ public class MainWindow extends JFrame implements ActionListener{
     private int width;
     private int height;
     private Board board;
-    private Grid vue;
-    private VueScore  score;
-    private ListButton listeButton;
+    private final Grid vue;
+    private final VueScore  score;
+    private final ListButton listeButton;
 
     public MainWindow(String title, int width, int height, Board board) {
         this.board = board;
@@ -58,7 +53,7 @@ public class MainWindow extends JFrame implements ActionListener{
         rightPanel.add(score);
 
         //Boutons
-        ListButton listeButton = new ListButton(this.board, this.vue, score, this);
+        ListButton listeButton = new ListButton(this);
         this.listeButton = listeButton;
         rightPanel.add(listeButton);
 
@@ -78,7 +73,7 @@ public class MainWindow extends JFrame implements ActionListener{
             this.board.saveBoard(nbSave, this.board.getSaveStorage());
         }else if(nameButton.equals("Charger une partie") && this.board.getSaveStorage() != null){
             this.board.setDemoMode(false);
-            SaveController saveController = new SaveController(this);
+            new SaveController(this);
         }else if(nameButton.equals("Nouvelle Configuration")){
             this.board.setDemoMode(false);
             this.board.clear();

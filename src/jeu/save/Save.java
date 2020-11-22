@@ -12,7 +12,7 @@ public class Save implements Serializable {
     private int id;
 
     private int saveNumber;
-    static AtomicInteger nextSaveNumber = new AtomicInteger();
+    static final AtomicInteger nextSaveNumber = new AtomicInteger();
 
     private String playerName;
 
@@ -72,10 +72,6 @@ public class Save implements Serializable {
     public int getSaveNumber() { return saveNumber; }
 
     public void setSaveNumber(int saveNumber) { this.saveNumber = saveNumber; }
-
-    public ArrayList<ScoreWithVal> getListSwv() { return listSwv; }
-
-    public void setListSwv(ArrayList<ScoreWithVal> listSwv) { this.listSwv = listSwv; }
 
     public int getId() {
         return id;

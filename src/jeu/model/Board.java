@@ -8,7 +8,6 @@ import jeu.save.SaveStorage;
 import jeu.save.SaveWriteRead;
 
 import java.awt.event.*;
-
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,17 +19,14 @@ public class Board {
     private boolean pieceAdded = false;
     private boolean isPlaying = false;
     private boolean newGame = false;
-    private PieceInterface pieceFocused;
-    private int nbMove;
     private boolean isSolving = false;
 
+    private PieceInterface pieceFocused;
+    private int nbMove;
     private SaveStorage saveStorage;
-
     static AtomicInteger nextId = new AtomicInteger();
     private int id;
-
     private String playerName;
-
     private final int nbLines;
     private final int nbColumns;
     private ArrayList<ArrayList<String>> board;
@@ -62,6 +58,10 @@ public class Board {
         this.listFilling.addAll(anotherList);
     }
 
+    /*==================================*/
+    /*===== REMPLISSAGE DE BOARD =======*/
+    /*==================================*/
+
     public void fillBoardRandomly() {
         for (int i = 0; i < Main.MAX_NB_PIECE_ON_BOARD; i++) {
             addRandomPiece();
@@ -69,28 +69,14 @@ public class Board {
     }
 
     public void fillBoardHello(int nbLines){
-
-        //RANDOM FILLING
-//        ArrayList<ArrayList<String>> board = new ArrayList<>();
-//        for (int i = 0; i < nbColumns; i++) {
-//            ArrayList<String> line = new ArrayList<>();
-//            board.add(line);
-//            for (int j = 0; j < nbLines; j++) {
-//                Random rand = new Random();
-//                line.add("["+this.listFilling.get(rand.nextInt(this.listFilling.size()))+"]");
-//            }
-//        }
-//        this.board = board;
-
         //SPIRAL FILLING
-        int n = nbLines;
-        int[][] spiral = new int[n][n];
+        int[][] spiral = new int[nbLines][nbLines];
         int value = 1;
         int minCol = 0;
-        int maxCol = n-1;
+        int maxCol = nbLines -1;
         int minLine = 0;
-        int maxLine = n-1;
-        while (value <= n*n) {
+        int maxLine = nbLines -1;
+        while (value <= nbLines * nbLines) {
             ArrayList<String> line = new ArrayList<>();
             board.add(line);
             for (int i = minCol; i <= maxCol; i++) {
@@ -127,28 +113,34 @@ public class Board {
         this.board = board;
     }
 
+    /*======================================*/
+    /*===== SAUVEGUARDE DE LA PARTIE =======*/
+    /*======================================*/
+
     public void saveBoard(int nbSave, SaveStorage saveStorage){
         if(!saveStorage.hasAlreadyBoard(getBoard())){
             if(this.currentScore > 0){
-                if(saveStorage != null) {
-                    nbSave += saveStorage.getSize();
-                }
-                Save save = new Save(saveStorage, getPlayerName(), nbSave, getNbLines(),
+                nbSave += saveStorage.getSize();
+                new Save(saveStorage, getPlayerName(), nbSave, getNbLines(),
                         getNbColumns(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv(), 45);
                 try {
                     SaveWriteRead.writeFile("save.txt", saveStorage);
-                    System.out.println("PARTIE SAUVEGUARDE");
+                    System.out.println("PARTIE SAUVEGARDE");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
             }
             else{
-                System.out.println("PARTIE NON SAUVEGUARDE CAR SCORE NUL");
+                System.out.println("PARTIE NON SAUVEGARDE CAR SCORE NUL");
             }
         }else{
-            System.out.println("PARTIE NON SAUVEGUARDE CAR DEJA DANS LE FICHIER");
+            System.out.println("CETTE PARTIE EST DEJA EXISTANTE PARMIS LES SAUVEGARDES ACTUELLES !");
         }
     }
+
+    /*===================================*/
+    /*===== PARTIE CLEARING BOARD =======*/
+    /*===================================*/
 
     public void clear() {
         clearListPiece();
@@ -177,6 +169,10 @@ public class Board {
         this.listFilling = new ArrayList<>(anotherList);
     }
 
+    /*===================================*/
+    /*===== PARTIE ADD/DEL PIECES =======*/
+    /*===================================*/
+
     public boolean addPiece(PieceInterface piece) {
         if (this.isSatisfiedPiece(piece)) {
             this.delPiece(piece.getFilling());
@@ -189,7 +185,6 @@ public class Board {
                     }
                 }
             }
-            this.listPiece.remove(piece);
             this.listPiece.add(piece);
             return true;
         } else {
@@ -258,6 +253,10 @@ public class Board {
         }
     }
 
+    /*=====================================*/
+    /*===== PARTIE ACTION SUR PIECE =======*/
+    /*=====================================*/
+
     public boolean rotatePiece(boolean direction, PieceInterface piece) {
         piece.rotate(direction);
         if (!(this.addPiece(piece))) {
@@ -290,6 +289,10 @@ public class Board {
         return direction;
     }
 
+    /*=========================================*/
+    /*===== PARTIE VERIFICATION PLACEMENT =====*/
+    /*=========================================*/
+
     public boolean isSatisfied(Point piece) {
         if (piece.getX() >= 0 && piece.getY() >= 0 && piece.getX() < nbLines && piece.getY() < nbColumns) {
             return this.board.get(piece.getX()).get(piece.getY()).equals("[ ]");
@@ -317,6 +320,10 @@ public class Board {
         }
         return value;
     }
+
+    /*========================================*/
+    /*===== PARTIE FONCTIONS PRATIQUES =======*/
+    /*========================================*/
 
     public void gameOver() {
         System.out.println("=============== SCORE DE LA PARTIE ===============");
@@ -380,26 +387,39 @@ public class Board {
 
     public ArrayList<Move> getValidMoves(){
         ArrayList<Move> validMoves = new ArrayList<>();
+        int count = 0;
         for(PieceInterface piece : this.listPiece){
+            count++;
+            System.out.println("listpiece start : " + this.listPiece);
+            System.out.println("piece iterated : " + piece);
+            //on fabrique une copie de la piece et de la board
+            PieceInterface copyPiece = piece.getCopy();
+            Board copyBoard;
             //translations valides
             for(int i = 1; i < 5; i++){
-                Board copyBoard = this.getCopy();
-                boolean valid = copyBoard.translatePiece(i, piece);
+                copyBoard = this.getCopy();
+                boolean valid = copyBoard.translatePiece(i, copyPiece);
                 if(valid){
                     validMoves.add(new Move(piece, this.tradDirection(i)));
+                    System.out.println("move added : " + piece + ", i : " + i);
                 }
             }
-            //rotations valides
-            Board copyBoard = this.getCopy();
-            boolean valid = copyBoard.rotatePiece(true, piece);
+            //rotations true valide
+            copyBoard = this.getCopy();
+            boolean valid = copyBoard.rotatePiece(true, copyPiece);
             if(valid){
                 validMoves.add(new Move(piece, "trueRotation"));
+                System.out.println("move added : " + piece + ", i : " + "true");
             }
+            //rotation false valide
             copyBoard = this.getCopy();
-            valid = copyBoard.rotatePiece(false, piece);
+            valid = copyBoard.rotatePiece(false, copyPiece);
             if(valid){
                 validMoves.add(new Move(piece, "falseRotation"));
+                System.out.println("move added : " + piece + ", i : " + "false");
             }
+            System.out.println("listpiece end : " + this.listPiece);
+            System.out.println("count : " + count);
         }
         System.out.println("test");
         return validMoves;

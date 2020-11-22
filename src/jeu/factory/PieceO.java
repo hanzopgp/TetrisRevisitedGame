@@ -56,6 +56,11 @@ public class PieceO implements PieceInterface, Serializable {
         this.changeState(this.currentState);
     }
 
+    @Override
+    public PieceInterface getCopy() {
+        return new PieceO(new Point(this.centralPiece.getX(), this.centralPiece.getY()), this.filling, this.height, this.width, this.currentState);
+    }
+
     public void changeState(int state) {
         switch (state) {
             case 1:
@@ -70,6 +75,8 @@ public class PieceO implements PieceInterface, Serializable {
             case 4:
                 this.setCurrentPiece(this.getState4());
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + state);
         }
     }
 

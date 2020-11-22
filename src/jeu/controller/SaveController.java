@@ -13,10 +13,10 @@ public class SaveController implements ActionListener {
     private static ArrayList<Save> saves;
     private SaveWindow vue;
     private static Save saveFocused;
-    private MainWindow mainWindow;
+    private final MainWindow mainWindow;
 
     public SaveController(MainWindow mainWindow){
-        this.saves = mainWindow.getBoard().getSaveStorage().getListSave();
+        saves = mainWindow.getBoard().getSaveStorage().getListSave();
         this.mainWindow = mainWindow;
         this.makeView();
     }
@@ -58,8 +58,6 @@ public class SaveController implements ActionListener {
             if(s.getPlayerName().equals(name[1]) && Integer.parseInt(name[0]) == s.getId()){
                 this.setSaveFocused(s);
                 break;
-            }else{
-                continue;
             }
         }
         this.vue.hide();

@@ -1,6 +1,5 @@
 package jeu;
 
-import jeu.controller.SaveController;
 import jeu.controller.MainController;
 import jeu.save.Save;
 import jeu.save.SaveStorage;
@@ -8,12 +7,6 @@ import jeu.save.SaveWriteRead;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
-/*** TODOLIST
- * - Ameliorer interface graphique ( remplacer 'R' 'F' 'ENTRER' par un bouton nouvelle partie, nouvelle configuration, finir partie etc )
- * - Ajouter un menu simple ( Nouvelle partie, Charger partie, Quitter )
- * - Ajout commentaire pour la javadoc
- */
 
 public class Main {
 
@@ -26,10 +19,10 @@ public class Main {
     public static int MAX_PIECE = 3;
     public static String FILE_NAME = "save.txt";
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException {
         //On recupere les sauveguardes si elles existent sinon on creer un nouveau saveStorage
         SaveStorage saveStorage = SaveWriteRead.readFile(Main.FILE_NAME);
-        ArrayList<Save> listSave = new ArrayList<>();
+        ArrayList<Save> listSave;
         if (saveStorage == null) {
             System.out.println("Nous n'avons pas trouvé de sauveguarde sur votre ordinateur !");
             saveStorage = new SaveStorage();

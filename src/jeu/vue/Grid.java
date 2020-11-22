@@ -5,7 +5,6 @@ import jeu.model.Board;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Grid extends JPanel {
 
@@ -15,7 +14,6 @@ public class Grid extends JPanel {
     //que va prendre la grille pour se dessiner
     private final int drawableWidth;
     private final int drawableHeight;
-    private ArrayList<JPanel> pieces;
     private Board board;
 
     public Grid(int width, int height, int drawableWidth, int drawableHeight, Board board) {

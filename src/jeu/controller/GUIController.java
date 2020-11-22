@@ -3,13 +3,10 @@ package jeu.controller;
 import jeu.Main;
 import jeu.computer.MoveAndScore;
 import jeu.computer.Solver;
-import jeu.model.Board;
 import jeu.factory.PieceInterface;
 import jeu.factory.PieceO;
 import jeu.vue.Case;
 import jeu.vue.MainWindow;
-
-import java.util.ArrayList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +51,7 @@ public class GUIController implements KeyListener, MouseListener{
                 if (e.getKeyCode() == KeyEvent.VK_E && !(this.mainWindow.getBoard().getPieceFocused() instanceof PieceO)) {
                     validMove = this.mainWindow.getBoard().rotatePiece(false, this.mainWindow.getBoard().getPieceFocused());
                 }
-                if(validMove){this.mainWindow.getBoard().movePlus(e);};
+                if(validMove){this.mainWindow.getBoard().movePlus(e);}
             }
             this.mainWindow.getVue().update();
             this.mainWindow.getVueScore().getMovesRemaning().setText("<html><p>Nombre de coups <br>restants : " + this.mainWindow.getBoard().getNbMove() + "/" + Main.NB_MOVE_MAX_GUI+"</p></html>");

@@ -2,27 +2,15 @@ package jeu.vue;
 
 import javax.swing.*;
 
-import jeu.Main;
-import jeu.model.Board;
-
 import java.awt.*;
-import java.awt.event.*;
 
 public class ListButton extends JPanel{
 
     private boolean isOver = false;
     private boolean pieceAdded = false;
     private boolean isPlaying = false;
-    private final Board board;
-    private final Grid vue;
-    private final VueScore score;
-    private MainWindow window;
 
-    public ListButton(Board board, Grid vue, VueScore score, MainWindow window){
-        this.board = board;
-        this.vue = vue;
-        this.score = score;
-        this.window = window;
+    public ListButton(MainWindow window){
         this.setLayout(new GridLayout(9, 1, 5, 5));
         this.setBackground(Color.WHITE);
         JButton newGame = new JButton("Reset");
@@ -32,13 +20,13 @@ public class ListButton extends JPanel{
         JButton deleteSave = new JButton("Supprimer les saves et quitter");
         JButton endGame = new JButton("Finir la partie");
         JButton leaveGame = new JButton("Quitter le jeu");
-        save.addActionListener(this.window);
-        load.addActionListener(this.window);
-        newGame.addActionListener(this.window);
-        newConfig.addActionListener(this.window);
-        endGame.addActionListener(this.window);
-        deleteSave.addActionListener(this.window);
-        leaveGame.addActionListener(this.window);
+        save.addActionListener(window);
+        load.addActionListener(window);
+        newGame.addActionListener(window);
+        newConfig.addActionListener(window);
+        endGame.addActionListener(window);
+        deleteSave.addActionListener(window);
+        leaveGame.addActionListener(window);
         this.add(newGame);
         this.add(newConfig);
         this.add(load);

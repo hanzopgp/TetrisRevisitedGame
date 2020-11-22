@@ -3,7 +3,6 @@ package jeu.controller;
 import jeu.Main;
 import jeu.model.Board;
 import jeu.factory.PieceInterface;
-import jeu.save.Save;
 import jeu.save.SaveStorage;
 import jeu.vue.MainWindow;
 
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import static jeu.controller.MainController.scannerIntLimit;
-import static jeu.controller.MainController.scannerString;
 
 public class BoardController {
 
@@ -79,16 +77,15 @@ public class BoardController {
                 this.board = this.board.getSaveStorage().getSavedBoardByNumber(nbSave);
             }
             else{
-                //On creer la nouvelle partie
-                for (int i = 0; i < Main.MAX_NB_PIECE_ON_BOARD; i++) {
-                    this.board.addRandomPiece();
-                }
+                this.board.fillBoardRandomly();
             }
+        }else{
+            this.board.fillBoardRandomly();
         }
         //Premier affichage
         System.out.flush();
         System.out.println();
-        this.board.toString();
+        System.out.println(this.board);
         System.out.println();
         //Boucle de jeu
         int nbMove = 0;
@@ -110,7 +107,7 @@ public class BoardController {
                 boolean boolDir = direction == 1;
                 this.board.rotatePiece(boolDir, currentPiece);
                 System.out.flush();
-                this.board.toString();
+                System.out.println(this.board);
                 //Affichage score
                 displayScore(nbMove, actionChosen);
             }
@@ -124,7 +121,7 @@ public class BoardController {
                 System.out.println("---> Vous avez choisit l'option numero : " + direction);
                 this.board.translatePiece(direction, currentPiece);
                 System.out.flush();
-                this.board.toString();
+                System.out.println(this.board);
                 //Affichage score
                 displayScore(nbMove, actionChosen);
             }

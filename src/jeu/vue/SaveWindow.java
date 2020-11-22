@@ -8,14 +8,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class SaveWindow extends JFrame implements ActionListener {
 
     private String title;
     private int width;
     private int height;
-    private SaveController controller;
+    private final SaveController controller;
 
     public SaveWindow(String title, int width, int height, SaveController controller) throws HeadlessException {
         this.title = title;
@@ -32,12 +31,12 @@ public class SaveWindow extends JFrame implements ActionListener {
     public void makeListSaveChoosing(){
         JPanel list = new JPanel();
         list.setBorder(new EmptyBorder(10, 10, 10, 10));
-        if(this.controller.getSaves().size() == 0){
+        if(SaveController.getSaves().size() == 0){
             list.setLayout(new GridLayout(1, 1));
             list.add(new JLabel("Aucune sauvegarde enregistrée ..."));
         }else{
-            list.setLayout(new GridLayout(this.controller.getSaves().size(), 1, 10, 10));
-            for(Save s : this.controller.getSaves()){
+            list.setLayout(new GridLayout(SaveController.getSaves().size(), 1, 10, 10));
+            for(Save s : SaveController.getSaves()){
                 JButton save = new JButton(s.getId()+" - "+s.getPlayerName());
                 save.setSize(new Dimension(100, 50));
                 save.addActionListener(controller);

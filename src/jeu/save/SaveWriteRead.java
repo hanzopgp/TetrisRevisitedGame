@@ -23,7 +23,7 @@ public class SaveWriteRead {
         oos.close();
     }
 
-    public static SaveStorage readFile(String fileName) throws IOException, ClassNotFoundException {
+    public static SaveStorage readFile(String fileName) throws IOException {
         File f = new File(fileName);
         SaveStorage saveStorage = null;
         if(f.exists()){
@@ -31,7 +31,7 @@ public class SaveWriteRead {
             try{
                 saveStorage = (SaveStorage) ois.readObject();
             }catch(Exception e){
-                System.out.println("Le fichier de sauveguarde est corrompu !");
+                System.out.println("Le fichier de sauvegarde est corrompu !");
                 ois.close();
                 if(f.delete()){
                     System.out.println("Fichier supprime avec succes !");

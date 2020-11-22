@@ -24,8 +24,6 @@ public class SaveStorage implements Serializable {
                     for(int j = 0; j < save.getBoard().get(i).size(); j++){
                         String element = save.getBoard().get(i).get(j);
                         String element2 = board.get(i).get(j);
-                        //System.out.println("e1 : " + element);
-                        //System.out.println("e2 : " + element2);
                         if(!element.equals(element2)){
                             return false;
                         }

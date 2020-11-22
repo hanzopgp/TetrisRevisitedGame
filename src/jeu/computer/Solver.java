@@ -14,8 +14,8 @@ public class Solver {
     public MoveAndScore solve(int depth, Board virtualBoard){
         Board virtualBoardNext;
         MoveAndScore currentScore; //MoveAndScore : Piece + Move + Score
-        ArrayList<MoveAndScore> tab = new ArrayList<MoveAndScore>();
-        ArrayList<Move> validMoves = virtualBoard.getValidMoves(); //valid moves : haut base gauche droite rotatedroite rotategauche;
+        ArrayList<MoveAndScore> tab = new ArrayList<>();
+        ArrayList<Move> validMoves = virtualBoard.getValidMoves(); //valid moves : haut base gauche droite truerotate falserotate;
         ArrayList<PieceInterface> listPiece = virtualBoard.getListPiece();
 
         if(validMoves.isEmpty()){

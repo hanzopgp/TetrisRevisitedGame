@@ -9,7 +9,6 @@ public class VueScore extends JPanel {
 
     private JLabel movesRemaining;
     private JLabel currentScore;
-    String playerNameString;
 
     public VueScore() {
         this.makeCptMovesRemaining();
@@ -28,10 +27,6 @@ public class VueScore extends JPanel {
         this.currentScore = new JLabel("Score actuel : 0", SwingConstants.CENTER);
         this.currentScore.setFont(this.currentScore.getFont().deriveFont(15f));
         this.add(this.currentScore);
-    }
-
-    public void setPlayerNameString(String playerNameString){
-        this.playerNameString = playerNameString;
     }
 
     /*==============================*/
