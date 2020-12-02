@@ -14,5 +14,6 @@ public interface PieceInterface {
 
     String getFilling();
 
-    PieceInterface getCopy();
+    PieceInterface clone();
+
 }

@@ -28,7 +28,7 @@ public class MainWindow extends JFrame implements ActionListener{
         this.width = width;
         this.height = height;
         this.setSize(this.width, this.height);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -76,6 +76,8 @@ public class MainWindow extends JFrame implements ActionListener{
             new SaveController(this);
         }else if(nameButton.equals("Nouvelle Configuration")){
             this.board.setDemoMode(false);
+            this.board.setNbMove(0);
+            this.board.setPieceFocused(null);
             this.board.clear();
             this.board.fillBoardRandomly();
             this.vue.update();
@@ -84,22 +86,22 @@ public class MainWindow extends JFrame implements ActionListener{
             this.board.setOver(false);
             this.board.setDemoMode(true);
             this.board.setNewGame(true);
+            this.board.setPieceFocused(null);
             this.board.clear();
             this.board.setPieceAdded(false);
             this.board.fillBoardHello(this.board.getNbLines());
             this.vue.update();
-            //this.score.getMovesRemaning().setText("Coups restants :\n 0/" + Main.NB_MOVE_MAX_GUI);
         }else if(nameButton.equals("Finir la partie")){
             this.board.setOver(true);
             this.board.gameOver();
             this.score.getMovesRemaning().setText("Coups restants :\n "+Main.NB_MOVE_MAX_GUI  +"/" + Main.NB_MOVE_MAX_GUI);
         }else if(nameButton.equals("Quitter le jeu")){
             this.board.saveBoard(0, this.board.getSaveStorage());
-            System.out.println("Nous avons automatiquement sauveguarde votre progression !");
+            System.out.println("Nous avons automatiquement sauvegarde votre progression !");
             System.out.println("=============== FIN DU PROGRAMME ===============");
             System.exit(1);
         }else if(nameButton.equals("Supprimer les saves et quitter")){
-            System.out.println("SAUVEGUARDES SUPPRIMEES");
+            System.out.println("SAUVEGARDES SUPPRIMEES");
             System.out.println("=============== FIN DU PROGRAMME ===============");
             this.board.getSaveStorage().deleteAll();
             System.exit(1);
@@ -114,6 +116,8 @@ public class MainWindow extends JFrame implements ActionListener{
         this.setBoard(saveChoosen);
         this.vue.setBoard(this.board);
         this.vue.update();
+        this.getVueScore().getMovesRemaning().setText("<html><p>Nombre de coups <br>restants : " + this.getBoard().getNbMove() + "/" + Main.NB_MOVE_MAX_GUI+"</p></html>");
+        this.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.getBoard().defineAreaType(this.getBoard().evaluate()) + " de score : " + this.getBoard().evaluate()+"</p></html>");
     }
 
     /*==============================*/

@@ -32,19 +32,19 @@ public class BoardController {
         System.out.println("=============== DEBUT DE LA PARTIE ===============");
         switch (difficulty) {
             case 1:
-                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 28, 28));
+                System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 28, 28));
                 return new Board(28, 28, saveStorage);
             case 2:
-                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 25, 25));
+                System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 25, 25));
                 return new Board(25, 25, saveStorage);
             case 3:
-                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 22, 22));
+                System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 22, 22));
                 return new Board(22, 22, saveStorage);
             case 4:
-                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 19, 19));
+                System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 19, 19));
                 return new Board(19, 19, saveStorage);
             case 5:
-                System.out.println("Votre meilleur score sauveguarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 16, 16));
+                System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 16, 16));
                 return new Board(16, 16, saveStorage);
             default:
                 throw new IllegalStateException("Unexpected value: " + difficulty);
@@ -60,9 +60,9 @@ public class BoardController {
     }
 
     public void makePlateauTerminal() {
-        //Affichage sauveguarde et choix
+        //Affichage sauvegarde et choix
         if(this.board.getSaveStorage().getSize() > 0){
-            System.out.println("Voici la liste des sauveguardes : ");
+            System.out.println("Voici la liste des sauvegarde : ");
             for(int n = 0; n < this.board.getSaveStorage().getSize(); n++){
                 System.out.println(this.board.getSaveStorage().getListSave().get(n));
             }
@@ -70,7 +70,7 @@ public class BoardController {
             int choix = scannerIntLimit(new Scanner(System.in), 1, 2);
             System.out.println("---> Votre choix : " + (choix == 1 ? "OUI" : "NON"));
             if(choix == 1){
-                System.out.println("Tapez l'ID de la sauveguarde");
+                System.out.println("Tapez l'ID de la sauvegarde");
                 int nbSave = scannerIntLimit(new Scanner(System.in), 0, this.board.getSaveStorage().getSize() - 1);
                 System.out.println("---> Votre choix : ");
                 System.out.println(this.board.getSaveStorage().getListSave().get(nbSave));
@@ -93,7 +93,7 @@ public class BoardController {
         while (nbMove < Main.NB_MOVE_MAX_TERMINAL && isPlaying) {
             nbMove++;
             //Choix rotation translation new save
-            System.out.println("Voulez-vous :\n(1) Roter une pièce\n(2) Translater une pièce\n(3) Finir la partie\n(4) Sauveguarder la partie");
+            System.out.println("Voulez-vous :\n(1) Roter une pièce\n(2) Translater une pièce\n(3) Finir la partie\n(4) Sauvegarder la partie");
             int actionChosen = scannerIntLimit(new Scanner(System.in), 1, 4);
             //Rotation
             if (actionChosen == 1) {
@@ -129,7 +129,7 @@ public class BoardController {
             else if(actionChosen == 3){
                 isPlaying = false;
             }
-            //Sauveguarder la partie
+            //sauvegarder la partie
             else if(actionChosen == 4){
                 int nbSave = 0;
                 this.board.saveBoard(nbSave , board.getSaveStorage());

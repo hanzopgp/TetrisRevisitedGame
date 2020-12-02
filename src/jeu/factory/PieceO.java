@@ -5,7 +5,7 @@ import jeu.model.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PieceO implements PieceInterface, Serializable {
+public class PieceO implements PieceInterface, Serializable, Cloneable {
 
     private Point centralPiece;
     private final String filling;
@@ -57,8 +57,14 @@ public class PieceO implements PieceInterface, Serializable {
     }
 
     @Override
-    public PieceInterface getCopy() {
-        return new PieceO(new Point(this.centralPiece.getX(), this.centralPiece.getY()), this.filling, this.height, this.width, this.currentState);
+    public PieceInterface clone(){
+        Object o = null;
+        try{
+            o = super.clone();
+        }catch(CloneNotSupportedException cnse){
+            cnse.printStackTrace(System.err);
+        }
+        return (PieceInterface)o;
     }
 
     public void changeState(int state) {

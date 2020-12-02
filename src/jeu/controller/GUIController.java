@@ -26,8 +26,8 @@ public class GUIController implements KeyListener, MouseListener{
             if (e.getKeyCode() == KeyEvent.VK_T && !this.mainWindow.getBoard().getIsSolving()) {
                 this.mainWindow.getBoard().setSolving(true);
                 Solver solver = new Solver();
-                MoveAndScore move = solver.solve(Main.SOLVER_DEPTH,this.mainWindow.getBoard());
-                System.out.println(move);
+                //MoveAndScore move = solver.solve(1,this.mainWindow.getBoard());
+                //System.out.println(move);
             }
             //Actions sur une piece selectionne
             if (this.mainWindow.getBoard().getPieceFocused() != null && !this.mainWindow.getBoard().getIsOver() && this.mainWindow.getBoard().getNbMove() < Main.NB_MOVE_MAX_GUI) {
@@ -53,6 +53,7 @@ public class GUIController implements KeyListener, MouseListener{
                 }
                 if(validMove){this.mainWindow.getBoard().movePlus(e);}
             }
+            System.out.println(this.mainWindow.getBoard().toString());
             this.mainWindow.getVue().update();
             this.mainWindow.getVueScore().getMovesRemaning().setText("<html><p>Nombre de coups <br>restants : " + this.mainWindow.getBoard().getNbMove() + "/" + Main.NB_MOVE_MAX_GUI+"</p></html>");
             this.mainWindow.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.mainWindow.getBoard().defineAreaType(this.mainWindow.getBoard().evaluate()) + " de score : " + this.mainWindow.getBoard().evaluate()+"</p></html>");

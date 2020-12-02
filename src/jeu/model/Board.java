@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Board {
+public class Board implements Cloneable{
 
     private boolean demoMode = false;
     private boolean isOver = false;
@@ -68,6 +68,12 @@ public class Board {
         }
     }
 
+    public void fillBoardRandomly(int n) {
+        for (int i = 0; i < n; i++) {
+            addRandomPiece();
+        }
+    }
+
     public void fillBoardHello(int nbLines){
         //SPIRAL FILLING
         int[][] spiral = new int[nbLines][nbLines];
@@ -114,7 +120,7 @@ public class Board {
     }
 
     /*======================================*/
-    /*===== SAUVEGUARDE DE LA PARTIE =======*/
+    /*===== SAUVEGARDER DE LA PARTIE =======*/
     /*======================================*/
 
     public void saveBoard(int nbSave, SaveStorage saveStorage){
@@ -122,7 +128,7 @@ public class Board {
             if(this.currentScore > 0){
                 nbSave += saveStorage.getSize();
                 new Save(saveStorage, getPlayerName(), nbSave, getNbLines(),
-                        getNbColumns(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv(), 45);
+                        getNbColumns(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv(), getNbMove());
                 try {
                     SaveWriteRead.writeFile("save.txt", saveStorage);
                     System.out.println("PARTIE SAUVEGARDE");
@@ -185,7 +191,14 @@ public class Board {
                     }
                 }
             }
-            this.listPiece.add(piece);
+            ArrayList<PieceInterface> tmp = new ArrayList<>();
+            for(PieceInterface p : this.listPiece){
+                if(!p.getFilling().equals(piece.getFilling())){
+                    tmp.add(p);
+                }
+            }
+            tmp.add(piece);
+            this.setListPiece(tmp);
             return true;
         } else {
             return false;
@@ -361,11 +374,23 @@ public class Board {
     /*===== PARTIE IA =======*/
     /*=======================*/
 
-    public Board getCopy(){
-        Board copyBoard = new Board(this.nbColumns, this.nbLines, this.saveStorage);
-        copyBoard.setBoard(this.board);
-        copyBoard.setListPiece(this.listPiece);
-        return copyBoard;
+    @Override
+    public Board clone(){
+        Object o = null;
+        try{
+            o = super.clone();
+        }catch(CloneNotSupportedException cnse){
+            cnse.printStackTrace(System.err);
+        }
+        return (Board)o;
+    }
+
+    public ArrayList<PieceInterface> copyListPiece(){
+        ArrayList<PieceInterface> copyListPiece = new ArrayList<>();
+        for(PieceInterface p : this.listPiece){
+            copyListPiece.add(p.clone());
+        }
+        return copyListPiece;
     }
 
     public void makeMove(Move move){
@@ -385,43 +410,72 @@ public class Board {
         }
     }
 
-    public ArrayList<Move> getValidMoves(){
-        ArrayList<Move> validMoves = new ArrayList<>();
-        int count = 0;
-        for(PieceInterface piece : this.listPiece){
-            count++;
-            System.out.println("listpiece start : " + this.listPiece);
-            System.out.println("piece iterated : " + piece);
-            //on fabrique une copie de la piece et de la board
-            PieceInterface copyPiece = piece.getCopy();
-            Board copyBoard;
-            //translations valides
-            for(int i = 1; i < 5; i++){
-                copyBoard = this.getCopy();
-                boolean valid = copyBoard.translatePiece(i, copyPiece);
-                if(valid){
-                    validMoves.add(new Move(piece, this.tradDirection(i)));
-                    System.out.println("move added : " + piece + ", i : " + i);
-                }
-            }
-            //rotations true valide
-            copyBoard = this.getCopy();
-            boolean valid = copyBoard.rotatePiece(true, copyPiece);
-            if(valid){
-                validMoves.add(new Move(piece, "trueRotation"));
-                System.out.println("move added : " + piece + ", i : " + "true");
-            }
-            //rotation false valide
-            copyBoard = this.getCopy();
-            valid = copyBoard.rotatePiece(false, copyPiece);
-            if(valid){
-                validMoves.add(new Move(piece, "falseRotation"));
-                System.out.println("move added : " + piece + ", i : " + "false");
-            }
-            System.out.println("listpiece end : " + this.listPiece);
-            System.out.println("count : " + count);
+    public void makeInverseMove(Move move){
+        switch (move.getTypeMove()){
+            case "haut" :
+                this.translatePiece(reverseDirection(1), move.getPiece());
+            case "bas" :
+                this.translatePiece(reverseDirection(2), move.getPiece());
+            case "gauche" :
+                this.translatePiece(reverseDirection(3), move.getPiece());
+            case "droite" :
+                this.translatePiece(reverseDirection(4), move.getPiece());
+            case "trueRotation" :
+                this.rotatePiece(false, move.getPiece());
+            case "falseRotation" :
+                this.rotatePiece(true, move.getPiece());
         }
-        System.out.println("test");
+    }
+
+//    public ArrayList<Move> getValidMoves(){
+//        ArrayList<Move> validMoves = new ArrayList<>();
+//        ArrayList<PieceInterface> listPieceCopy = new ArrayList<>(this.listPiece);
+//        int count = 0;
+//        for(PieceInterface piece : listPieceCopy){
+//            count++;
+//            //on fabrique une copie de la piece et de la board
+//            PieceInterface copyPiece = piece.clone();
+//            Board copyBoard;
+//            //translations valides
+//            for(int i = 1; i < 5; i++){
+//                copyBoard = this.clone();
+//                boolean valid = copyBoard.translatePiece(i, copyPiece);
+//                if(valid){
+//                    validMoves.add(new Move(piece, this.tradDirection(i)));
+//                }
+//            }
+//            //rotations true valide
+//            copyBoard = this.clone();
+//            boolean valid = copyBoard.rotatePiece(true, copyPiece);
+//            if(valid){
+//                validMoves.add(new Move(piece, "trueRotation"));
+//            }
+//            //rotation false valide
+//            copyBoard = this.clone();
+//            valid = copyBoard.rotatePiece(false, copyPiece);
+//            if(valid){
+//                validMoves.add(new Move(piece, "falseRotation"));
+//            }
+//        }
+//        return validMoves;
+//    }
+
+    public ArrayList<Move> getValidMoves(PieceInterface piece){
+        Board copyBoard = this.clone();
+        copyBoard.setListPiece(this.copyListPiece());
+        ArrayList<Move> validMoves = new ArrayList<>();
+        if(copyBoard.translatePiece(1, piece)){
+            validMoves.add(new Move(piece, "haut"));
+        }
+        if(copyBoard.translatePiece(2, piece)){
+            validMoves.add(new Move(piece, "bas"));
+        }
+        if(copyBoard.translatePiece(3, piece)){
+            validMoves.add(new Move(piece, "gauche"));
+        }
+        if(copyBoard.translatePiece(4, piece)){
+            validMoves.add(new Move(piece, "droite"));
+        }
         return validMoves;
     }
 
@@ -451,7 +505,8 @@ public class Board {
     }
 
     public String defineAreaType(int max) {
-        int maxX = 0, maxY = 0;
+        int maxX = 0;
+        int maxY = 0;
         for (ScoreWithVal swv : listSwv) {
             if (swv.getScore() == max) {
                 maxX = swv.getX();

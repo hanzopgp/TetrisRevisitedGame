@@ -54,6 +54,7 @@ public class SaveStorage implements Serializable {
                 savedBoard.setListSwv(save.listSwv);
                 savedBoard.setCurrentScore(save.getCurrentScore());
                 savedBoard.setPlayerName(save.getPlayerName());
+                savedBoard.setNbMove(save.getNbMovePlayed());
             }
         }
         return savedBoard;

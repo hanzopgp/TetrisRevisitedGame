@@ -20,15 +20,15 @@ public class Main {
     public static String FILE_NAME = "save.txt";
 
     public static void main(String[] args) throws IOException {
-        //On recupere les sauveguardes si elles existent sinon on creer un nouveau saveStorage
+        //On recupere les sauvegardes si elles existent sinon on creer un nouveau saveStorage
         SaveStorage saveStorage = SaveWriteRead.readFile(Main.FILE_NAME);
         ArrayList<Save> listSave;
         if (saveStorage == null) {
-            System.out.println("Nous n'avons pas trouvé de sauveguarde sur votre ordinateur !");
+            System.out.println("Nous n'avons pas trouvé de sauvegarde sur votre ordinateur !");
             saveStorage = new SaveStorage();
         }
         else{
-            System.out.println("Nous avons trouvé " + saveStorage.getSize() + " sauveguardes sur votre ordinateur ! ");
+            System.out.println("Nous avons trouvé " + saveStorage.getSize() + " sauvegardes sur votre ordinateur ! ");
             listSave = saveStorage.getListSave();
             for (Save save : listSave) {
                 System.out.println(save);
@@ -38,6 +38,5 @@ public class Main {
         MainController controller = new MainController();
         controller.defineGamemode(saveStorage);
     }
-
 }
 

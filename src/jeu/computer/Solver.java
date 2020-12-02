@@ -7,58 +7,240 @@ import java.util.ArrayList;
 
 public class Solver {
 
+    private int cpt = 0;
+
     public Solver() {
 
     }
 
-    public MoveAndScore solve(int depth, Board virtualBoard){
-        Board virtualBoardNext;
-        MoveAndScore currentScore; //MoveAndScore : Piece + Move + Score
-        ArrayList<MoveAndScore> tab = new ArrayList<>();
-        ArrayList<Move> validMoves = virtualBoard.getValidMoves(); //valid moves : haut base gauche droite truerotate falserotate;
-        ArrayList<PieceInterface> listPiece = virtualBoard.getListPiece();
-
-        if(validMoves.isEmpty()){
-            return null;
-        }
-
-        for(PieceInterface piece : listPiece){
-            for(Move move : validMoves){
-                virtualBoardNext = virtualBoard.getCopy();
-                System.out.println("base : " + virtualBoard);
-                System.out.println("next : " + virtualBoardNext);
-                virtualBoardNext.makeMove(move);
-                if(depth == 0){
-                    currentScore = new MoveAndScore(piece, move.getTypeMove(), virtualBoardNext.evaluate() - virtualBoard.evaluate());
-                }else{
-                    currentScore = solve(depth - 1, virtualBoardNext);
-                    if(currentScore == null){
-                        currentScore = new MoveAndScore(piece, move.getTypeMove(), virtualBoardNext.evaluate() - virtualBoard.evaluate());
-                    }else{
-                        currentScore = new MoveAndScore(piece, move.getTypeMove(), virtualBoard.evaluate());
+    public MoveAndScore solve(int depth, Board board, MoveAndScore bestScore) {
+        boolean firstMove = false;
+        MoveAndScore best = null;
+        if (depth != 0) {
+            for (PieceInterface piece : new ArrayList<>(board.getListPiece())) {
+                for (Move move : board.getValidMoves(piece)) {
+                    this.cpt++;
+                    if (bestScore.getTypeMove().equals("")) {
+                        firstMove = true;
+                        bestScore.setTypeMove(move.getTypeMove());
+                        bestScore.setPiece(piece);
+                    }
+                    board.makeMove(move);
+                    int currentScore = board.evaluate();
+                    if (currentScore > bestScore.getScore()) {
+                        bestScore.setScore(currentScore);
+                    }
+                    MoveAndScore nextMoveAndScore = solve(depth - 1, board, bestScore);
+                    if (nextMoveAndScore.getScore() > bestScore.getScore()) {
+                        bestScore.setScore(nextMoveAndScore.getScore());
+                    }
+                    board.makeInverseMove(move);
+                    if(firstMove){
+                        if(best != null){
+                            if(bestScore.getScore() > best.getScore()){
+                                best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+                            }
+                        }else{
+                            best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+                        }
+                        bestScore.setTypeMove("");
                     }
                 }
-                tab.add(currentScore);
+                if (firstMove) {
+                    if(bestScore.getScore() > best.getScore()){
+                        best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+                    }
+                    bestScore.setPiece(null);
+                }
             }
         }
-        return bestMoveAndScoreOf(tab);
+        return (firstMove ? best : bestScore);
+}
+
+    public int getCpt() {
+        return this.cpt;
     }
 
-    public MoveAndScore bestMoveAndScoreOf(ArrayList<MoveAndScore> tab){
-        MoveAndScore bestMove = tab.get(0);
-        int maxScore = 0;
-        for(MoveAndScore move : tab){
-            if(move.getScore() > maxScore){
-                maxScore = move.getScore();
-            }
-        }
-        for(MoveAndScore move : tab){
-            if(move.getScore() == maxScore){
-                bestMove = move;
-            }
-        }
-        return bestMove;
-    }
+
+//    public MoveAndScore solve(int depth, Board board){
+//        Board boardCopy = board.clone();
+//        ArrayList<PieceInterface> listPieceCopy = board.copyListPiece();
+//        boardCopy.setListPiece(listPieceCopy);
+//        MoveAndScore currentScore;
+//        ArrayList<MoveAndScore> tabScore = new ArrayList<>();
+//        for(PieceInterface piece : listPieceCopy) {
+//            for (Move move : boardCopy.getValidMoves(piece)) {
+//                this.cpt++;
+//                Board boardCopyNext = boardCopy.clone();
+//                boardCopyNext.setListPiece(boardCopy.copyListPiece());
+//                boardCopyNext.makeMove(move);
+//                if(depth == 0){
+//                    currentScore = new MoveAndScore(move, boardCopyNext.evaluate() - boardCopy.evaluate());
+//                }else{
+//                    currentScore = solve(depth - 1, boardCopyNext);
+//                    if(currentScore == null){
+//                        currentScore = new MoveAndScore(move, boardCopyNext.evaluate() - boardCopy.evaluate());
+//                    }else{
+//                        currentScore = new MoveAndScore(move, boardCopy.evaluate());
+//                    }
+//                }
+//                tabScore.add(currentScore);
+//            }
+//        }
+//        return bestMoveAndScoreOf(tabScore);
+//    }
+//
+//    public MoveAndScore bestMoveAndScoreOf(ArrayList<MoveAndScore> tabScore){
+//        MoveAndScore bestMove = tabScore.get(0);
+//        int maxScore = 0;
+//        for(MoveAndScore move : tabScore){
+//            if(move.getScore() > maxScore){
+//                maxScore = move.getScore();
+//            }
+//        }
+//        for(MoveAndScore move : tabScore){
+//            if(move.getScore() == maxScore){
+//                bestMove = move;
+//            }
+//        }
+//        return bestMove;
+//    }
+//
+
+
+//        public MoveAndScore solve(int depth, Board virtualBoard){
+//            System.out.println("depth : " + depth);
+//            Board virtualBoardNext;
+//            MoveAndScore currentScore; //MoveAndScore : Piece + Move + Score
+//            ArrayList<MoveAndScore> tab = new ArrayList<>();
+//            ArrayList<Move> virtualValidMoves = new ArrayList<>(virtualBoard.getValidMoves()); //valid moves : haut base gauche droite truerotate falserotate;
+//            ArrayList<PieceInterface> virtualListPiece = new ArrayList<>(virtualBoard.getListPiece());
+//
+//            for(PieceInterface virtualPiece : virtualListPiece){
+//                for(Move virtualMove : virtualValidMoves){
+//                    virtualBoardNext = virtualBoard.clone();
+//                    virtualBoardNext.makeMove(virtualMove);
+//                    if(depth == 0){
+//                        currentScore =  new MoveAndScore(virtualPiece, virtualMove.getTypeMove(), virtualBoardNext.evaluate() - virtualBoard.evaluate());
+//                    }else{
+//                        currentScore = solve(depth - 1, virtualBoardNext);
+//                    }
+//                    tab.add(currentScore);
+//                }
+//            }
+//            return bestMoveAndScoreOf(tab);
+//    }
+
+
+//    public MoveAndScore solve(int depth, Board board, MoveAndScore bestScore){
+//        boolean firstMove = false;
+//        if(depth != 0){
+//            for(PieceInterface piece : new ArrayList<>(board.getListPiece())){
+//                for(Move move : board.getValidMoves(piece)){
+//                    if(bestScore.getTypeMove().equals("")){
+//                        System.out.println("hi");
+//                        firstMove = true;
+//                        bestScore.setTypeMove(move.getTypeMove());
+//                        bestScore.setPiece(piece);
+//                    }
+//                    System.out.println(board);
+//                    System.out.println(move.getTypeMove());
+//                    board.makeMove(move);
+//                    System.out.println(board);
+//                    int currentScore = board.evaluate();
+//                    System.out.println("currentScore : " + currentScore);
+//                    if(currentScore > bestScore.getScore()){
+//                        bestScore.setScore(currentScore);
+//                    }
+//                    MoveAndScore nextMoveAndScore = solve(depth - 1, board, bestScore);
+//                    if(nextMoveAndScore.getScore() > bestScore.getScore()){
+//                        bestScore.setScore(nextMoveAndScore.getScore());
+//                    }
+//                    board.makeInverseMove(move);
+//                    return bestScore;
+//                        //bestScore.setTypeMove("");
+//
+//                }
+//                if(firstMove){
+//                    bestScore.setPiece(null);
+//                }
+//            }
+//        }
+//        return bestScore;
+//    }
+
+//    public MoveAndScore solve(int depth, Board virtualBoard){
+//        System.out.println("depth : " + depth);
+//        Board virtualBoardNext;
+//        MoveAndScore currentScore; //MoveAndScore : Piece + Move + Score
+//        ArrayList<MoveAndScore> tab = new ArrayList<>();
+//        ArrayList<Move> virtualValidMoves = new ArrayList<>(virtualBoard.getValidMoves()); //valid moves : haut base gauche droite truerotate falserotate;
+//        ArrayList<PieceInterface> virtualListPiece = new ArrayList<>(virtualBoard.getListPiece());
+//
+//        for(PieceInterface virtualPiece : virtualListPiece){
+//            for(Move virtualMove : virtualValidMoves){
+//                virtualBoardNext = virtualBoard.clone();
+//                virtualBoardNext.makeMove(virtualMove);
+//                if(depth == 0){
+//                    currentScore =  new MoveAndScore(virtualPiece, virtualMove.getTypeMove(), virtualBoardNext.evaluate() - virtualBoard.evaluate());
+//                }else{
+//                    currentScore = solve(depth - 1, virtualBoardNext);
+//                }
+//                tab.add(currentScore);
+//            }
+//        }
+//
+//        return bestMoveAndScoreOf(tab);
+//    }
+
+//    public MoveAndScore solve(int depth, Board virtualBoard){
+//        System.out.println("depth : " + depth);
+//        Board virtualBoardNext;
+//        MoveAndScore currentScore; //MoveAndScore : Piece + Move + Score
+//        ArrayList<MoveAndScore> tab = new ArrayList<>();
+//        ArrayList<Move> virtualValidMoves = new ArrayList<>(virtualBoard.getValidMoves()); //valid moves : haut base gauche droite truerotate falserotate;
+//        ArrayList<PieceInterface> virtualListPiece = new ArrayList<>(virtualBoard.getListPiece());
+//
+//        if(depth == 0){
+//            return null;
+//        }
+//
+//        for(PieceInterface virtualPiece : virtualListPiece){
+//            for(Move virtualMove : virtualValidMoves){
+//                virtualBoardNext = virtualBoard.getCopy();
+//                virtualBoardNext.makeMove(virtualMove);
+//                if(depth == 0){
+//                    currentScore = new MoveAndScore(virtualPiece, virtualMove.getTypeMove(), virtualBoardNext.evaluate() - virtualBoard.evaluate());
+//                }else{
+//                    currentScore = solve(depth - 1, virtualBoardNext);
+//                    if(currentScore == null){
+//                        currentScore = new MoveAndScore(virtualPiece, virtualMove.getTypeMove(), virtualBoardNext.evaluate() - virtualBoard.evaluate());
+//                    }else{
+//                        currentScore = new MoveAndScore(virtualPiece, virtualMove.getTypeMove(), virtualBoard.evaluate());
+//                    }
+//                }
+//                tab.add(currentScore);
+//                System.out.println(tab.size());
+//            }
+//        }
+//        return bestMoveAndScoreOf(tab);
+//    }
+
+//    public MoveAndScore bestMoveAndScoreOf(ArrayList<MoveAndScore> tab){
+//        MoveAndScore bestMove = tab.get(0);
+//        int maxScore = 0;
+//        for(MoveAndScore move : tab){
+//            if(move.getScore() > maxScore){
+//                maxScore = move.getScore();
+//            }
+//        }
+//        for(MoveAndScore move : tab){
+//            if(move.getScore() == maxScore){
+//                bestMove = move;
+//            }
+//        }
+//        return bestMove;
+//    }
 
 //    public void solve() {
 //        ArrayList<PieceInterface> listPiece = this.board.getListPiece();

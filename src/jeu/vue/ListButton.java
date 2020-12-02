@@ -1,6 +1,7 @@
 package jeu.vue;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 
@@ -11,6 +12,8 @@ public class ListButton extends JPanel{
     private boolean isPlaying = false;
 
     public ListButton(MainWindow window){
+        //margin sur tout les côté de 10
+        this.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.setLayout(new GridLayout(9, 1, 5, 5));
         this.setBackground(Color.WHITE);
         JButton newGame = new JButton("Reset");
@@ -20,20 +23,20 @@ public class ListButton extends JPanel{
         JButton deleteSave = new JButton("Supprimer les saves et quitter");
         JButton endGame = new JButton("Finir la partie");
         JButton leaveGame = new JButton("Quitter le jeu");
-        save.addActionListener(window);
-        load.addActionListener(window);
-        newGame.addActionListener(window);
-        newConfig.addActionListener(window);
-        endGame.addActionListener(window);
-        deleteSave.addActionListener(window);
-        leaveGame.addActionListener(window);
-        this.add(newGame);
-        this.add(newConfig);
-        this.add(load);
-        this.add(save);
-        this.add(deleteSave);
-        this.add(endGame);
-        this.add(leaveGame);
+        this.prepareButton(newGame, window);
+        this.prepareButton(newConfig, window);
+        this.prepareButton(load, window);
+        this.prepareButton(save, window);
+        this.prepareButton(deleteSave, window);
+        this.prepareButton(endGame, window);
+        this.prepareButton(leaveGame, window);
+    }
+
+    public void prepareButton(JButton button, MainWindow window){
+        button.setContentAreaFilled(false);
+        button.addActionListener(window);
+        button.setSize(300, 100);
+        this.add(button);
     }
 
     public boolean getIsOver(){

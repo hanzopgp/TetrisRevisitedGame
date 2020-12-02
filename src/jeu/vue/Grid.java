@@ -81,12 +81,12 @@ public class Grid extends JPanel {
             case "[v]":
             case "[w]":
             case "[x]":
-                return Color.black;
+                return Color.CYAN;
             case "[y]":
             case "[z]":
                 return Color.gray;
             default:
-                return Color.CYAN;
+                return Color.black;
         }
     }
 
@@ -103,8 +103,6 @@ public class Grid extends JPanel {
         this.make();
         this.revalidate();
         this.repaint();
-        //this.setFocusable(true);
-        //this.requestFocusInWindow();
     }
 
 }
