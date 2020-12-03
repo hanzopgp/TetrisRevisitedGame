@@ -25,6 +25,20 @@ public class SaveController implements ActionListener {
         this.vue = new SaveWindow("Tetris v1.0", 500, 500, this);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        JButton saveFocused = (JButton) e.getSource();
+        String[] name = saveFocused.getText().replace(" ", "").split("-");
+        for(Save s : saves){
+            if(s.getPlayerName().equals(name[1]) && Integer.parseInt(name[0]) == s.getId()){
+                this.setSaveFocused(s);
+                break;
+            }
+        }
+        this.vue.hide();
+        this.mainWindow.loadGame(this.getSaveFocused());
+    }
+
     public static ArrayList<Save> getSaves() {
         return saves;
     }
@@ -49,18 +63,4 @@ public class SaveController implements ActionListener {
         SaveController.saveFocused = saveFocused;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton saveFocused = (JButton) e.getSource();
-        String[] name = saveFocused.getText().replace(" ", "").split("-");
-        //System.out.println("id "+name[0]+" et player "+name[1]);
-        for(Save s : saves){
-            if(s.getPlayerName().equals(name[1]) && Integer.parseInt(name[0]) == s.getId()){
-                this.setSaveFocused(s);
-                break;
-            }
-        }
-        this.vue.hide();
-        this.mainWindow.loadGame(this.getSaveFocused());
-    }
 }

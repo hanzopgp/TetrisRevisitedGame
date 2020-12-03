@@ -7,6 +7,7 @@ import jeu.save.SaveWriteRead;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
@@ -38,5 +39,39 @@ public class Main {
         MainController controller = new MainController();
         controller.defineGamemode(saveStorage);
     }
+
+    // Verifie que l'input est un int
+    public static int scannerInt(Scanner scanner, String errormsg) {
+        while (!scanner.hasNextInt()) {
+            System.out.println(errormsg);
+            scanner.nextLine();
+        }
+        int input = scanner.nextInt();
+        scanner.nextLine();
+        return input;
+    }
+
+    public static String scannerString(Scanner scanner, String errormsg) {
+        while (!scanner.hasNext()) {
+            System.out.println(errormsg);
+            scanner.nextLine();
+        }
+        return scanner.next();
+    }
+
+    // Verifie que l'input est un int et qu'il est entre min et max
+    public static int scannerIntLimit(Scanner scanner, int min, int max) {
+        int input;
+        int cpt = 0;
+        do {
+            if (cpt >= 1) { //affiche le msg d'erreur specifique a scannerIntLimit apres un cycle (donc une erreur de l'utilisateur)
+                System.out.println("Entrez un nombre entre " + min + " et " + max + " !");
+            }
+            cpt++;
+            input = scannerInt(scanner, "Veuillez entrer un nombre entier");
+        } while (input < min || input > max);
+        return input;
+    }
+
 }
 

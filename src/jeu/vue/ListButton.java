@@ -39,6 +39,10 @@ public class ListButton extends JPanel{
         this.add(button);
     }
 
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
+
     public boolean getIsOver(){
         return isOver;
     }

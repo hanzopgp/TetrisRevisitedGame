@@ -48,6 +48,13 @@ public class Grid extends JPanel {
         }
     }
 
+    public void update() {
+        this.removeAll();
+        this.make();
+        this.revalidate();
+        this.repaint();
+    }
+
     public static Color setPieceColor(String filling) {
         switch (filling) {
             case "[a]":
@@ -96,13 +103,6 @@ public class Grid extends JPanel {
 
     public Board getBoard() {
         return board;
-    }
-
-    public void update() {
-        this.removeAll();
-        this.make();
-        this.revalidate();
-        this.repaint();
     }
 
 }

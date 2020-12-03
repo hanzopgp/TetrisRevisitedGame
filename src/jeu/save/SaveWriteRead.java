@@ -6,6 +6,9 @@ import java.io.*;
 
 public class SaveWriteRead {
 
+    /**
+     * Supprime le fichier de sauveguarde
+     */
     public static void deleteSave(){
         File f = new File(Main.FILE_NAME);
         if(f.delete()){
@@ -15,6 +18,11 @@ public class SaveWriteRead {
         }
     }
 
+    /**
+     * Ecrit les sauveguardes dans le fichier
+     * @param fileName le nom du fichier
+     * @param saveStorage l'object contenant la liste des sauveguardes
+     */
     public static void writeFile(String fileName, SaveStorage saveStorage) throws IOException {
         File f = new File(fileName);
         ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
@@ -23,6 +31,11 @@ public class SaveWriteRead {
         oos.close();
     }
 
+    /**
+     * Recupere l'object SaveStorage contenu dans le fichier
+     * @param fileName le nom du fichier
+     * @return saveStorage l'object contenant la liste des sauveguardes ecrites dans le fichier
+     */
     public static SaveStorage readFile(String fileName) throws IOException {
         File f = new File(fileName);
         SaveStorage saveStorage = null;

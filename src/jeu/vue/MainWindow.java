@@ -31,32 +31,26 @@ public class MainWindow extends JFrame implements ActionListener{
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         //grile
         Grid vue = new Grid(board.getColonnes(), board.getLignes(), (this.width) - 100, (this.height) - 100, this.board);
         this.vue = vue;
-
         //TABLEAU SCORE A DROITE + BOUTONS + ALERTES
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new GridLayout(4, 1));
         rightPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         rightPanel.setBackground(Color.GRAY);
-
         //Titre du jeu
         JLabel gameTitle = new JLabel(this.getTitle(), SwingConstants.CENTER);
         gameTitle.setFont(gameTitle.getFont().deriveFont(20f));
         rightPanel.add(gameTitle);
-
         //score
         VueScore score = new VueScore();
         this.score = score;
         rightPanel.add(score);
-
         //Boutons
         ListButton listeButton = new ListButton(this);
         this.listeButton = listeButton;
         rightPanel.add(listeButton);
-
         //affichage
         this.getContentPane().add(vue, BorderLayout.CENTER);
         this.getContentPane().add(rightPanel, BorderLayout.EAST);

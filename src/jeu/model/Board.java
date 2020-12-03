@@ -21,7 +21,7 @@ public class Board implements Cloneable{
     private boolean newGame = false;
     private boolean isSolving = false;
 
-    private PieceInterface pieceFocused;
+    private Piece pieceFocused;
     private int nbMove;
     private SaveStorage saveStorage;
     static AtomicInteger nextId = new AtomicInteger();
@@ -30,10 +30,10 @@ public class Board implements Cloneable{
     private final int nbLines;
     private final int nbColumns;
     private ArrayList<ArrayList<String>> board;
-    private ArrayList<PieceInterface> listPiece;
+    private ArrayList<Piece> listPiece;
     private ArrayList<String> listFilling;
     private int cptMaxPieceOnBoard;
-    ArrayList<ScoreWithVal> listSwv = new ArrayList<>();
+    ArrayList<PointWithScore> listSwv = new ArrayList<>();
     private int currentScore;
 
     public Board(int nbColumns, int nbLines, SaveStorage saveStorage) {
@@ -41,6 +41,21 @@ public class Board implements Cloneable{
         this.saveStorage = saveStorage;
         this.id = nextId.incrementAndGet();
         this.cptMaxPieceOnBoard = 0;
+        ArrayList<ArrayList<String>> board = initBoard(nbColumns, nbLines);
+        this.listPiece = new ArrayList<>();
+        this.board = board;
+        this.nbLines = nbLines;
+        this.nbColumns = nbColumns;
+        this.listFilling = new ArrayList<>();
+        List<String> anotherList = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
+        this.listFilling.addAll(anotherList);
+    }
+
+    /*=====================================*/
+    /*===== INITIALISATION DE BOARD =======*/
+    /*=====================================*/
+
+    private ArrayList<ArrayList<String>> initBoard(int nbColumns, int nbLines) {
         ArrayList<ArrayList<String>> board = new ArrayList<>();
         for (int i = 0; i < nbColumns; i++) {
             ArrayList<String> line = new ArrayList<>();
@@ -49,13 +64,7 @@ public class Board implements Cloneable{
                 line.add("[ ]");
             }
         }
-        this.listPiece = new ArrayList<>();
-        this.board = board;
-        this.nbLines = nbLines;
-        this.nbColumns = nbColumns;
-        this.listFilling = new ArrayList<>();
-        List<String> anotherList = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
-        this.listFilling.addAll(anotherList);
+        return board;
     }
 
     /*==================================*/
@@ -159,14 +168,7 @@ public class Board implements Cloneable{
     }
 
     public void clearBoard() {
-        ArrayList<ArrayList<String>> newBoard = new ArrayList<>();
-        for (int i = 0; i < nbColumns; i++) {
-            ArrayList<String> line = new ArrayList<>();
-            newBoard.add(line);
-            for (int j = 0; j < nbLines; j++) {
-                line.add("[ ]");
-            }
-        }
+        ArrayList<ArrayList<String>> newBoard = initBoard(nbColumns, nbLines);
         this.board = newBoard;
     }
 
@@ -179,7 +181,7 @@ public class Board implements Cloneable{
     /*===== PARTIE ADD/DEL PIECES =======*/
     /*===================================*/
 
-    public boolean addPiece(PieceInterface piece) {
+    public boolean addPiece(Piece piece) {
         if (this.isSatisfiedPiece(piece)) {
             this.delPiece(piece.getFilling());
             for (int i = 0; i < this.board.size(); i++) {
@@ -191,8 +193,8 @@ public class Board implements Cloneable{
                     }
                 }
             }
-            ArrayList<PieceInterface> tmp = new ArrayList<>();
-            for(PieceInterface p : this.listPiece){
+            ArrayList<Piece> tmp = new ArrayList<>();
+            for(Piece p : this.listPiece){
                 if(!p.getFilling().equals(piece.getFilling())){
                     tmp.add(p);
                 }
@@ -212,7 +214,7 @@ public class Board implements Cloneable{
 
     public void addRandomPiece() throws IllegalStateException {
         boolean isValid = false;
-        PieceInterface randomPiece;
+        Piece randomPiece;
         //On cree des pieces aleatoires jusqu'a ce qu'une piece soit valide
         while (!isValid) {
             //Parametres aleatoires
@@ -235,7 +237,7 @@ public class Board implements Cloneable{
                     randomPiece = new PieceS(randomCentralPiece, randomFilling, randomPieceHeight, randomPieceWidth, randomPieceWidth2, randomState);
                     break;
                 case 3:
-                    randomPiece = new PieceT(randomCentralPiece, randomFilling, randomPieceHeight, randomPieceWidth, randomState);
+                    randomPiece = new PieceT(randomCentralPiece, randomFilling, randomPieceHeight, randomPieceWidth, 3);
                     break;
                 case 4:
                     randomPiece = new PieceI(randomCentralPiece, randomFilling, randomPieceHeight, 1, randomState);
@@ -270,7 +272,7 @@ public class Board implements Cloneable{
     /*===== PARTIE ACTION SUR PIECE =======*/
     /*=====================================*/
 
-    public boolean rotatePiece(boolean direction, PieceInterface piece) {
+    public boolean rotatePiece(boolean direction, Piece piece) {
         piece.rotate(direction);
         if (!(this.addPiece(piece))) {
             piece.rotate(!(direction));
@@ -279,8 +281,8 @@ public class Board implements Cloneable{
         return true;
     }
 
-    public boolean translatePiece(int direction, PieceInterface piece) {
-        PieceInterface newPiece = piece.translation(direction);
+    public boolean translatePiece(int direction, Piece piece) {
+        Piece newPiece = piece.translation(direction);
         if (!(this.addPiece(newPiece))) {
             newPiece.translation(this.reverseDirection(direction));
             return false;
@@ -313,7 +315,7 @@ public class Board implements Cloneable{
         return false;
     }
 
-    public boolean isSatisfiedPiece(PieceInterface newPiece) {
+    public boolean isSatisfiedPiece(Piece newPiece) {
         boolean value = false;
         ArrayList<Point> piece = newPiece.getCurrentPiece();
         for (Point item : piece) {
@@ -349,8 +351,6 @@ public class Board implements Cloneable{
     public void movePlus(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_S:
-            case KeyEvent.VK_E:
-            case KeyEvent.VK_A:
             case KeyEvent.VK_D:
             case KeyEvent.VK_Q:
             case KeyEvent.VK_Z:
@@ -385,109 +385,104 @@ public class Board implements Cloneable{
         return (Board)o;
     }
 
-    public ArrayList<PieceInterface> copyListPiece(){
-        ArrayList<PieceInterface> copyListPiece = new ArrayList<>();
-        for(PieceInterface p : this.listPiece){
+    public ArrayList<Piece> copyListPiece(){
+        ArrayList<Piece> copyListPiece = new ArrayList<>();
+        for(Piece p : this.listPiece){
             copyListPiece.add(p.clone());
         }
         return copyListPiece;
     }
 
+    public ArrayList<ArrayList<String>> copyBoard(){
+        ArrayList<ArrayList<String>>  copyBoard = new ArrayList<>();
+        for(ArrayList<String> list : new ArrayList<>(this.board)){
+            copyBoard.add(list);
+            for(String str : new ArrayList<>(list)){
+                list.add(str);
+            }
+        }
+        return copyBoard;
+    }
+
     public void makeMove(Move move){
         switch (move.getTypeMove()){
             case "haut" :
-                this.translatePiece(1, move.getPiece());
-            case "bas" :
-                this.translatePiece(2, move.getPiece());
-            case "gauche" :
                 this.translatePiece(3, move.getPiece());
-            case "droite" :
+                break;
+            case "bas" :
                 this.translatePiece(4, move.getPiece());
+                break;
+            case "gauche" :
+                this.translatePiece(1, move.getPiece());
+                break;
+            case "droite" :
+                this.translatePiece(2, move.getPiece());
+                break;
             case "trueRotation" :
                 this.rotatePiece(true, move.getPiece());
+                break;
             case "falseRotation" :
                 this.rotatePiece(false, move.getPiece());
+                break;
         }
     }
 
     public void makeInverseMove(Move move){
         switch (move.getTypeMove()){
             case "haut" :
-                this.translatePiece(reverseDirection(1), move.getPiece());
-            case "bas" :
-                this.translatePiece(reverseDirection(2), move.getPiece());
-            case "gauche" :
                 this.translatePiece(reverseDirection(3), move.getPiece());
-            case "droite" :
+                break;
+            case "bas" :
                 this.translatePiece(reverseDirection(4), move.getPiece());
+                break;
+            case "gauche" :
+                this.translatePiece(reverseDirection(1), move.getPiece());
+                break;
+            case "droite" :
+                this.translatePiece(reverseDirection(2), move.getPiece());
+                break;
             case "trueRotation" :
+                System.out.println("trigger");
                 this.rotatePiece(false, move.getPiece());
+                break;
             case "falseRotation" :
                 this.rotatePiece(true, move.getPiece());
+                break;
         }
     }
 
-//    public ArrayList<Move> getValidMoves(){
-//        ArrayList<Move> validMoves = new ArrayList<>();
-//        ArrayList<PieceInterface> listPieceCopy = new ArrayList<>(this.listPiece);
-//        int count = 0;
-//        for(PieceInterface piece : listPieceCopy){
-//            count++;
-//            //on fabrique une copie de la piece et de la board
-//            PieceInterface copyPiece = piece.clone();
-//            Board copyBoard;
-//            //translations valides
-//            for(int i = 1; i < 5; i++){
-//                copyBoard = this.clone();
-//                boolean valid = copyBoard.translatePiece(i, copyPiece);
-//                if(valid){
-//                    validMoves.add(new Move(piece, this.tradDirection(i)));
-//                }
-//            }
-//            //rotations true valide
-//            copyBoard = this.clone();
-//            boolean valid = copyBoard.rotatePiece(true, copyPiece);
-//            if(valid){
-//                validMoves.add(new Move(piece, "trueRotation"));
-//            }
-//            //rotation false valide
-//            copyBoard = this.clone();
-//            valid = copyBoard.rotatePiece(false, copyPiece);
-//            if(valid){
-//                validMoves.add(new Move(piece, "falseRotation"));
-//            }
-//        }
-//        return validMoves;
-//    }
-
-    public ArrayList<Move> getValidMoves(PieceInterface piece){
+    public ArrayList<Move> getValidMoves(Piece piece){
         Board copyBoard = this.clone();
         copyBoard.setListPiece(this.copyListPiece());
         ArrayList<Move> validMoves = new ArrayList<>();
-        if(copyBoard.translatePiece(1, piece)){
-            validMoves.add(new Move(piece, "haut"));
-        }
-        if(copyBoard.translatePiece(2, piece)){
-            validMoves.add(new Move(piece, "bas"));
-        }
         if(copyBoard.translatePiece(3, piece)){
-            validMoves.add(new Move(piece, "gauche"));
+            validMoves.add(new Move(piece, "haut"));
+            copyBoard.translatePiece(reverseDirection(3), piece);
         }
         if(copyBoard.translatePiece(4, piece)){
+            validMoves.add(new Move(piece, "bas"));
+            copyBoard.translatePiece(reverseDirection(4), piece);
+        }
+        if(copyBoard.translatePiece(1, piece)){
+            validMoves.add(new Move(piece, "gauche"));
+            copyBoard.translatePiece(reverseDirection(1), piece);
+        }
+        if(copyBoard.translatePiece(2, piece)){
             validMoves.add(new Move(piece, "droite"));
+            copyBoard.translatePiece(reverseDirection(2), piece);
         }
         return validMoves;
     }
 
     public String tradDirection(int direction){
         switch(direction){
-            case 1 :
-                return "haut";
-            case 2 :
-                return "bas";
             case 3 :
-                return "gauche";
+                return "haut";
             case 4 :
+                return "bas";
+            case 1 :
+                return "gauche";
+            case 2 :
                 return "droite";
             default:
                 throw new IllegalStateException("Unexpected value: " + direction);
@@ -507,10 +502,10 @@ public class Board implements Cloneable{
     public String defineAreaType(int max) {
         int maxX = 0;
         int maxY = 0;
-        for (ScoreWithVal swv : listSwv) {
-            if (swv.getScore() == max) {
-                maxX = swv.getX();
-                maxY = swv.getY();
+        for (PointWithScore pws : listSwv) {
+            if (pws.getScore() == max) {
+                maxX = pws.getX();
+                maxY = pws.getY();
             }
         }
         //System.out.println("ER : " + maxX + " : "+maxY);
@@ -564,22 +559,22 @@ public class Board implements Cloneable{
             } else {
                 int area;
                 int x = stack.pop();
-                ScoreWithVal swv = new ScoreWithVal(0, 0, 0);
+                PointWithScore pws = new PointWithScore(new Point(0,0), 0);
                 if (stack.isEmpty()) {
                     area = columnSize[x] * lineSize;
-                    swv.setX(lineSize);
+                    pws.setX(lineSize);
                     //System.out.println("Taille des lignes : " + lineSize);
                 } else {
                     area = columnSize[x] * (lineSize - stack.peek() - 1);
-                    swv.setX(lineSize - stack.peek() - 1);
+                    pws.setX(lineSize - stack.peek() - 1);
                     //System.out.println("Taille des lignes : " + (lineSize - stack.peek() - 1));
                 }
                 //System.out.println("Taille des colonnes : " + columnSize[x]);
                 //System.out.println("Aires : " + area);
                 //Suivie des valeurs
-                swv.setScore(area);
-                swv.setY(columnSize[x]);
-                this.listSwv.add(swv);
+                pws.setScore(area);
+                pws.setY(columnSize[x]);
+                this.listSwv.add(pws);
                 maximum = Math.max(maximum, area);
             }
         }
@@ -613,7 +608,7 @@ public class Board implements Cloneable{
         this.demoMode = demoMode;
     }
 
-    public ArrayList<ScoreWithVal> getListSwv() { return listSwv; }
+    public ArrayList<PointWithScore> getListSwv() { return listSwv; }
 
     public String getPlayerName() {
         return playerName;
@@ -671,11 +666,11 @@ public class Board implements Cloneable{
         this.id = id;
     }
 
-    public void setListPiece(ArrayList<PieceInterface> listPiece) {
+    public void setListPiece(ArrayList<Piece> listPiece) {
         this.listPiece = listPiece;
     }
 
-    public ArrayList<PieceInterface> getListPiece() {
+    public ArrayList<Piece> getListPiece() {
         return listPiece;
     }
 
@@ -695,7 +690,7 @@ public class Board implements Cloneable{
         this.cptMaxPieceOnBoard = cptMaxPieceOnBoard;
     }
 
-    public void setListSwv(ArrayList<ScoreWithVal> listSwv) {
+    public void setListSwv(ArrayList<PointWithScore> listSwv) {
         this.listSwv = listSwv;
     }
 
@@ -719,7 +714,7 @@ public class Board implements Cloneable{
         return this.nbMove;
     }
     
-    public PieceInterface getPieceFocused() {
+    public Piece getPieceFocused(){
         return this.pieceFocused;
     }
 
@@ -743,7 +738,7 @@ public class Board implements Cloneable{
         return this.isSolving;
     }
     
-    public void setPieceFocused(PieceInterface pieceFocused) {
+    public void setPieceFocused(Piece pieceFocused) {
         this.pieceFocused = pieceFocused;
     }
 

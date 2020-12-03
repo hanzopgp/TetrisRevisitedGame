@@ -1,8 +1,10 @@
 package jeu.model;
 
+import jeu.factory.Piece;
+
 import javax.swing.*;
 
-public class Point extends JPanel {
+public class Point extends JPanel implements Cloneable{
 
     private int x;
     private int y;
@@ -12,13 +14,22 @@ public class Point extends JPanel {
         this.y = y;
     }
 
+    @Override
+    public Point clone(){
+        Object o = null;
+        try{
+            o = super.clone();
+        }catch(CloneNotSupportedException cnse){
+            cnse.printStackTrace(System.err);
+        }
+        return (Point)o;
+    }
+
     /*==============================*/
     /*===== GETTER & SETTERS =======*/
     /*==============================*/
 
-    public int getX() {
-        return this.x;
-    }
+    public int getX() { return this.x; }
 
     public int getY() {
         return this.y;

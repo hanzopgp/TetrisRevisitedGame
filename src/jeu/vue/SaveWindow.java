@@ -46,6 +46,10 @@ public class SaveWindow extends JFrame implements ActionListener {
         this.getContentPane().add(list, BorderLayout.NORTH);
     }
 
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
+
     @Override
     public String getTitle() {
         return title;

@@ -1,9 +1,8 @@
 package jeu.controller;
 
 import jeu.Main;
-import jeu.computer.MoveAndScore;
 import jeu.computer.Solver;
-import jeu.factory.PieceInterface;
+import jeu.factory.Piece;
 import jeu.factory.PieceO;
 import jeu.vue.Case;
 import jeu.vue.MainWindow;
@@ -34,6 +33,7 @@ public class GUIController implements KeyListener, MouseListener{
                 this.mainWindow.getBoard().setPlaying(true);
                 boolean validMove = false;
                 if (e.getKeyCode() == KeyEvent.VK_S) {
+                    System.out.println(this.mainWindow.getBoard().getPieceFocused());
                     validMove = this.mainWindow.getBoard().translatePiece(2, this.mainWindow.getBoard().getPieceFocused());
                 }
                 if (e.getKeyCode() == KeyEvent.VK_Z) {
@@ -74,7 +74,7 @@ public class GUIController implements KeyListener, MouseListener{
             JPanel test = (JPanel) this.mainWindow.getVue().getComponentAt(point);
             try {
                 Case cell = (Case) test.getComponent(0);
-                for (PieceInterface p : this.mainWindow.getBoard().getListPiece()) {
+                for (Piece p : this.mainWindow.getBoard().getListPiece()) {
                     if (p.getFilling().equals(cell.getCurrentPiece())) {
                         this.mainWindow.getBoard().setPieceFocused(p);
                         break;

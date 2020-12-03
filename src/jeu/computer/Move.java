@@ -1,30 +1,32 @@
 package jeu.computer;
 
-import jeu.factory.PieceInterface;
+import jeu.factory.Piece;
 
 public class Move {
 
-    private PieceInterface piece;
+    private Piece piece;
     private String typeMove;
 
-    public Move(PieceInterface piece, String typeMove) {
+    /**
+     * Object Move contenant une piece et le type de move associe
+     * @param piece object piece
+     * @param typeMove string type de move
+     */
+    public Move(Piece piece, String typeMove) {
         this.piece = piece;
         this.typeMove = typeMove;
     }
 
-    public PieceInterface getPiece() {
-        return piece;
-    }
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
-    public void setPiece(PieceInterface piece) {
-        this.piece = piece;
-    }
+    public Piece getPiece() { return piece; }
 
-    public String getTypeMove() {
-        return typeMove;
-    }
+    public void setPiece(Piece piece) { this.piece = piece; }
 
-    public void setTypeMove(String typeMove) {
-        this.typeMove = typeMove;
-    }
+    public String getTypeMove() { return typeMove; }
+
+    public void setTypeMove(String typeMove) { this.typeMove = typeMove; }
+
 }

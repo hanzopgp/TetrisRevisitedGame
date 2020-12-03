@@ -1,7 +1,7 @@
 package jeu.save;
 
-import jeu.factory.PieceInterface;
-import jeu.model.ScoreWithVal;
+import jeu.factory.Piece;
+import jeu.model.PointWithScore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,28 +10,37 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Save implements Serializable {
 
     private int id;
-
     private int saveNumber;
     static final AtomicInteger nextSaveNumber = new AtomicInteger();
-
     private String playerName;
-
     private ArrayList<Save> listSave = new ArrayList<>();
-
     private final int nbLines;
     private final int nbColumns;
     private ArrayList<ArrayList<String>> board;
-    private ArrayList<PieceInterface> listPiece;
+    private ArrayList<Piece> listPiece;
     private ArrayList<String> listFilling;
     private int cptMaxPieceOnBoard;
-    ArrayList<ScoreWithVal> listSwv;
+    ArrayList<PointWithScore> listSwv;
     private int currentScore;
     private int nbMovePlayed;
 
-    public Save(SaveStorage saveStorage, String playerName, int id, int nbLines, int nbColumns, ArrayList<ArrayList<String>> board, int currentScore, ArrayList<PieceInterface> listPiece, ArrayList<String> listFilling, int cptMaxPieceOnBoard, ArrayList<ScoreWithVal> listSwv, int nbMovePlayed) {
-
+    /**
+     * Constructeur
+     * @param saveStorage l'object stockant les sauveguardes
+     * @param playerName le nom du joueur
+     * @param id le numero de la partie
+     * @param nbLines le nombre de lignes de la grille
+     * @param nbColumns le nombre de colonnes de la grille
+     * @param board la grille
+     * @param currentScore le score de la grille
+     * @param listPiece la liste des pieces de la partie
+     * @param listFilling la liste des caracteres associes aux pieces
+     * @param cptMaxPieceOnBoard le nombre de piece sur la grille
+     * @param listSwv la liste des objets ScoreWithVal
+     * @param nbMovePlayed le nombre de coups joues sur cette partie
+     */
+    public Save(SaveStorage saveStorage, String playerName, int id, int nbLines, int nbColumns, ArrayList<ArrayList<String>> board, int currentScore, ArrayList<Piece> listPiece, ArrayList<String> listFilling, int cptMaxPieceOnBoard, ArrayList<PointWithScore> listSwv, int nbMovePlayed) {
         this.id = id;
-
         this.playerName = playerName;
         this.saveNumber = nextSaveNumber.incrementAndGet();
         this.nbLines = nbLines;
@@ -43,10 +52,13 @@ public class Save implements Serializable {
         this.cptMaxPieceOnBoard = cptMaxPieceOnBoard;
         this.listSwv = listSwv;
         this.nbMovePlayed = nbMovePlayed;
-
         saveStorage.addSave(this);
     }
 
+    /**
+     * Methode permettant d'afficher tous les parametres de la sauveguarde
+     * @return la chaine de caractere que l'on veut afficher
+     */
     @Override
     public String toString(){
         String str = "++++++++++++++++++++++++++++++++++++++++++++++++++\n";
@@ -73,76 +85,40 @@ public class Save implements Serializable {
 
     public void setSaveNumber(int saveNumber) { this.saveNumber = saveNumber; }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
 
-    public ArrayList<Save> getListSave() {
-        return listSave;
-    }
+    public ArrayList<Save> getListSave() { return listSave; }
 
-    public void setListSave(ArrayList<Save> listSave) {
-        this.listSave = listSave;
-    }
+    public void setListSave(ArrayList<Save> listSave) { this.listSave = listSave; }
 
-    public int getNbLines() {
-        return nbLines;
-    }
+    public int getNbLines() { return nbLines; }
 
-    public int getNbColumns() {
-        return nbColumns;
-    }
+    public int getNbColumns() { return nbColumns; }
 
-    public int getCurrentScore() {
-        return currentScore;
-    }
+    public int getCurrentScore() { return currentScore; }
 
-    public void setCurrentScore(int currentScore) {
-        this.currentScore = currentScore;
-    }
+    public void setCurrentScore(int currentScore) { this.currentScore = currentScore; }
 
-    public ArrayList<ArrayList<String>> getBoard() {
-        return board;
-    }
+    public ArrayList<ArrayList<String>> getBoard() { return board; }
 
-    public void setBoard(ArrayList<ArrayList<String>> board) {
-        this.board = board;
-    }
+    public void setBoard(ArrayList<ArrayList<String>> board) { this.board = board; }
 
-    public ArrayList<PieceInterface> getListPiece() {
-        return listPiece;
-    }
+    public ArrayList<Piece> getListPiece() { return listPiece; }
 
-    public void setListPiece(ArrayList<PieceInterface> listPiece) {
-        this.listPiece = listPiece;
-    }
+    public void setListPiece(ArrayList<Piece> listPiece) { this.listPiece = listPiece; }
 
-    public ArrayList<String> getListFilling() {
-        return listFilling;
-    }
+    public ArrayList<String> getListFilling() { return listFilling; }
 
-    public String getPlayerName() {
-        return playerName;
-    }
+    public String getPlayerName() { return playerName; }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
+    public void setPlayerName(String playerName) { this.playerName = playerName; }
 
-    public void setListFilling(ArrayList<String> listFilling) {
-        this.listFilling = listFilling;
-    }
+    public void setListFilling(ArrayList<String> listFilling) { this.listFilling = listFilling; }
 
-    public int getCptMaxPieceOnBoard() {
-        return cptMaxPieceOnBoard;
-    }
+    public int getCptMaxPieceOnBoard() { return cptMaxPieceOnBoard; }
 
-    public void setCptMaxPieceOnBoard(int cptMaxPieceOnBoard) {
-        this.cptMaxPieceOnBoard = cptMaxPieceOnBoard;
-    }
+    public void setCptMaxPieceOnBoard(int cptMaxPieceOnBoard) { this.cptMaxPieceOnBoard = cptMaxPieceOnBoard; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public void setId(int id) { this.id = id; }
 
 }

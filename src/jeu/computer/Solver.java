@@ -1,7 +1,8 @@
 package jeu.computer;
 
 import jeu.model.Board;
-import jeu.factory.PieceInterface;
+import jeu.factory.Piece;
+import jeu.model.Point;
 
 import java.util.ArrayList;
 
@@ -13,54 +14,114 @@ public class Solver {
 
     }
 
-    public MoveAndScore solve(int depth, Board board, MoveAndScore bestScore) {
+    public MoveAndScore solve(int depth, Board board, MoveAndScore bestScore){
         boolean firstMove = false;
-        MoveAndScore best = null;
-        if (depth != 0) {
-            for (PieceInterface piece : new ArrayList<>(board.getListPiece())) {
-                for (Move move : board.getValidMoves(piece)) {
-                    this.cpt++;
-                    if (bestScore.getTypeMove().equals("")) {
+        MoveAndScore best = new MoveAndScore(new Move(null, ""), 0);
+        if(depth != 0){
+            for(Piece piece : new ArrayList<>(board.getListPiece())){
+                for(Move move : board.getValidMoves(piece)){
+                    this.cpt ++;
+                    if(bestScore.getTypeMove().equals("")){
                         firstMove = true;
                         bestScore.setTypeMove(move.getTypeMove());
                         bestScore.setPiece(piece);
                     }
+                    Point pieceCentral = piece.getCentralPiece().clone();
                     board.makeMove(move);
                     int currentScore = board.evaluate();
-                    if (currentScore > bestScore.getScore()) {
+                    if(currentScore > bestScore.getScore()){
                         bestScore.setScore(currentScore);
                     }
                     MoveAndScore nextMoveAndScore = solve(depth - 1, board, bestScore);
-                    if (nextMoveAndScore.getScore() > bestScore.getScore()) {
+                    if(nextMoveAndScore.getScore() > bestScore.getScore()){
                         bestScore.setScore(nextMoveAndScore.getScore());
                     }
-                    board.makeInverseMove(move);
-                    if(firstMove){
-                        if(best != null){
-                            if(bestScore.getScore() > best.getScore()){
-                                best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
-                            }
-                        }else{
-                            best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+                    piece.setCentralPiece(pieceCentral);
+                    //board.makeInverseMove(move);
+                    if(firstMove) {
+                        if (bestScore.getScore() > best.getScore()) {
+                            best.setScore(bestScore.getScore());
+                            best.setPiece(bestScore.getPiece());
+                            best.setTypeMove(bestScore.getTypeMove());
                         }
+                        //best = bestScore;
                         bestScore.setTypeMove("");
                     }
                 }
-                if (firstMove) {
-                    if(bestScore.getScore() > best.getScore()){
-                        best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+                if(firstMove){
+                    if (bestScore.getScore() > best.getScore()) {
+                        best.setScore(bestScore.getScore());
+                        best.setPiece(bestScore.getPiece());
+                        best.setTypeMove(bestScore.getTypeMove());
                     }
                     bestScore.setPiece(null);
                 }
             }
         }
-        return (firstMove ? best : bestScore);
-}
+        if(firstMove) {
+            return best;
+        }
+        else
+            return bestScore;
+    }
+
+    /*=============================*/
+    /*===== GETTER & SETTER =======*/
+    /*=============================*/
 
     public int getCpt() {
         return this.cpt;
     }
 
+}
+
+/*==============================*/
+/*===== ESSAIS DE SOLVER =======*/
+/*==============================*/
+
+//    public MoveAndScore solve(int depth, Board board, MoveAndScore bestScore) {
+//        boolean firstMove = false;
+//        MoveAndScore best = null;
+//        if (depth != 0) {
+//            for (Piece piece : new ArrayList<>(board.getListPiece())) {
+//                for (Move move : board.getValidMoves(piece)) {
+//                    this.cpt++;
+//                    if (bestScore.getTypeMove().equals("")) {
+//                        firstMove = true;
+//                        bestScore.setTypeMove(move.getTypeMove());
+//                        bestScore.setPiece(piece);
+//                    }
+//                    board.makeMove(move);
+//                    int currentScore = board.evaluate();
+//                    if (currentScore > bestScore.getScore()) {
+//                        bestScore.setScore(currentScore);
+//                    }
+//                    MoveAndScore nextMoveAndScore = solve(depth - 1, board, bestScore);
+//                    if (nextMoveAndScore.getScore() > bestScore.getScore()) {
+//                        bestScore.setScore(nextMoveAndScore.getScore());
+//                    }
+//                    //board.makeInverseMove(move);
+//                    if (firstMove) {
+//                        if (best != null) {
+//                            if (bestScore.getScore() > best.getScore()) {
+//                                best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+//                            }
+//                        } else {
+//                            best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+//                        }
+//                        bestScore.setTypeMove("");
+//                    }
+//                }
+//                if (firstMove) {
+//                    if (bestScore.getScore() > best.getScore()) {
+//                        best = new MoveAndScore(new Move(bestScore.getPiece(), bestScore.getTypeMove()), bestScore.getScore());
+//                    }
+//                    bestScore.setPiece(null);
+//                }
+//            }
+//        }
+//        return (firstMove ? best : bestScore);
+//    }
 
 //    public MoveAndScore solve(int depth, Board board){
 //        Board boardCopy = board.clone();
@@ -292,4 +353,4 @@ public class Solver {
 //        return bestMoveWithScore;
 //    }
 
-}
+

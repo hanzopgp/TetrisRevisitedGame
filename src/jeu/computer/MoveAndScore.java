@@ -1,18 +1,25 @@
 package jeu.computer;
 
-import jeu.model.Board;
-
 public class MoveAndScore extends Move implements Cloneable{
 
     private int score;
     private Move move;
 
+    /**
+     * Object MoveAndScore contenant un object Move en plus d'un int score
+     * @param move object Move
+     * @param score int contenant un score
+     */
     public MoveAndScore(Move move, int score) {
         super(move.getPiece(), move.getTypeMove());
         this.move = move;
         this.score = score;
     }
 
+    /**
+     * Permet de copier l'object
+     * @return o l'object copie
+     */
     @Override
     public MoveAndScore clone(){
         Object o = null;
@@ -24,15 +31,14 @@ public class MoveAndScore extends Move implements Cloneable{
         return (MoveAndScore)o;
     }
 
-    public Move getMove(){
-        return this.move;
-    }
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
-    public int getScore() {
-        return score;
-    }
+    public Move getMove(){ return this.move; }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
+    public int getScore() { return score; }
+
+    public void setScore(int score) { this.score = score; }
+
 }
