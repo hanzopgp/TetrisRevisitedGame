@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Classe principale du model, elle contient la grille de jeu
+ */
 public class Board implements Cloneable{
 
     private boolean demoMode = false;
@@ -20,6 +23,7 @@ public class Board implements Cloneable{
     private boolean isPlaying = false;
     private boolean newGame = false;
     private boolean isSolving = false;
+    private boolean solverTest = false;
 
     private Piece pieceFocused;
     private int nbMove;
@@ -36,6 +40,12 @@ public class Board implements Cloneable{
     ArrayList<PointWithScore> listSwv = new ArrayList<>();
     private int currentScore;
 
+    /**
+     * Constructeur de l'object Board
+     * @param nbColumns nombre de colonnes de la grille
+     * @param nbLines nombre de lignes de la grille
+     * @param saveStorage object stockant les sauveguardes
+     */
     public Board(int nbColumns, int nbLines, SaveStorage saveStorage) {
         this.nbMove = 0;
         this.saveStorage = saveStorage;
@@ -55,6 +65,12 @@ public class Board implements Cloneable{
     /*===== INITIALISATION DE BOARD =======*/
     /*=====================================*/
 
+    /**
+     * Initialise la grille en mettant toute les valeurs a zero
+     * @param nbColumns nombre de colonnes de la grille
+     * @param nbLines nombre de lignes de la grille
+     * @return la board initialisee
+     */
     private ArrayList<ArrayList<String>> initBoard(int nbColumns, int nbLines) {
         ArrayList<ArrayList<String>> board = new ArrayList<>();
         for (int i = 0; i < nbColumns; i++) {
@@ -71,18 +87,29 @@ public class Board implements Cloneable{
     /*===== REMPLISSAGE DE BOARD =======*/
     /*==================================*/
 
+    /**
+     * Remplit aleatoirement la board de piece suivant le nombre Main.MAX_NB_PIECE_ON_BOARD
+     */
     public void fillBoardRandomly() {
         for (int i = 0; i < Main.MAX_NB_PIECE_ON_BOARD; i++) {
             addRandomPiece();
         }
     }
 
+    /**
+     * Remplit aleatoirement la board de piece suivant le nombre n
+     * @param n nombre de pieces a mettre
+     */
     public void fillBoardRandomly(int n) {
         for (int i = 0; i < n; i++) {
             addRandomPiece();
         }
     }
 
+    /**
+     * Remplit la board de presentation en utilisant un algorithme permettant de faire une spirale
+     * @param nbLines nombre de ligne de la grille
+     */
     public void fillBoardHello(int nbLines){
         //SPIRAL FILLING
         int[][] spiral = new int[nbLines][nbLines];
@@ -132,6 +159,11 @@ public class Board implements Cloneable{
     /*===== SAUVEGARDER DE LA PARTIE =======*/
     /*======================================*/
 
+    /**
+     * Sauveguarde la partie
+     * @param nbSave numero de la partie
+     * @param saveStorage object contenant la liste des sauveguardes
+     */
     public void saveBoard(int nbSave, SaveStorage saveStorage){
         if(!saveStorage.hasAlreadyBoard(getBoard())){
             if(this.currentScore > 0){
@@ -157,21 +189,33 @@ public class Board implements Cloneable{
     /*===== PARTIE CLEARING BOARD =======*/
     /*===================================*/
 
+    /**
+     * Reset toute la board
+     */
     public void clear() {
         clearListPiece();
         clearBoard();
         clearListFilling();
     }
 
+    /**
+     * Reset la liste des pieces
+     */
     public void clearListPiece() {
         this.listPiece = new ArrayList<>();
     }
 
+    /**
+     * Reinitialise le contenu de la board
+     */
     public void clearBoard() {
         ArrayList<ArrayList<String>> newBoard = initBoard(nbColumns, nbLines);
         this.board = newBoard;
     }
 
+    /**
+     * Reinitialise la liste des caracteres disponibles pour les pieces
+     */
     public void clearListFilling() {
         List<String> anotherList = Arrays.asList("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z");
         this.listFilling = new ArrayList<>(anotherList);
@@ -181,6 +225,11 @@ public class Board implements Cloneable{
     /*===== PARTIE ADD/DEL PIECES =======*/
     /*===================================*/
 
+    /**
+     * Ajoute une piece a la liste des pieces si c'est possible
+     * @param piece la piece que l'on veut ajouter
+     * @return booleen indiquant si l'ajout a ete effectue
+     */
     public boolean addPiece(Piece piece) {
         if (this.isSatisfiedPiece(piece)) {
             this.delPiece(piece.getFilling());
@@ -207,6 +256,12 @@ public class Board implements Cloneable{
         }
     }
 
+    /**
+     * Renvoie un nombre aleatoire entre min et max
+     * @param min borne minimum
+     * @param max borne maximum
+     * @return le nombre aleatoire borne
+     */
     public int randomIntLimit(int min, int max) {
         Random r = new Random();
         return r.nextInt((max - min) + 1) + min;
@@ -407,16 +462,16 @@ public class Board implements Cloneable{
     public void makeMove(Move move){
         switch (move.getTypeMove()){
             case "haut" :
-                this.translatePiece(3, move.getPiece());
-                break;
-            case "bas" :
-                this.translatePiece(4, move.getPiece());
-                break;
-            case "gauche" :
                 this.translatePiece(1, move.getPiece());
                 break;
-            case "droite" :
+            case "bas" :
                 this.translatePiece(2, move.getPiece());
+                break;
+            case "gauche" :
+                this.translatePiece(3, move.getPiece());
+                break;
+            case "droite" :
+                this.translatePiece(4, move.getPiece());
                 break;
             case "trueRotation" :
                 this.rotatePiece(true, move.getPiece());
@@ -430,19 +485,18 @@ public class Board implements Cloneable{
     public void makeInverseMove(Move move){
         switch (move.getTypeMove()){
             case "haut" :
-                this.translatePiece(reverseDirection(3), move.getPiece());
-                break;
-            case "bas" :
-                this.translatePiece(reverseDirection(4), move.getPiece());
-                break;
-            case "gauche" :
                 this.translatePiece(reverseDirection(1), move.getPiece());
                 break;
-            case "droite" :
+            case "bas" :
                 this.translatePiece(reverseDirection(2), move.getPiece());
                 break;
+            case "gauche" :
+                this.translatePiece(reverseDirection(3), move.getPiece());
+                break;
+            case "droite" :
+                this.translatePiece(reverseDirection(4), move.getPiece());
+                break;
             case "trueRotation" :
-                System.out.println("trigger");
                 this.rotatePiece(false, move.getPiece());
                 break;
             case "falseRotation" :
@@ -453,41 +507,68 @@ public class Board implements Cloneable{
 
     public ArrayList<Move> getValidMoves(Piece piece){
         Board copyBoard = this.clone();
+        Piece tmp = piece.clone();
         copyBoard.setListPiece(this.copyListPiece());
         ArrayList<Move> validMoves = new ArrayList<>();
-        if(copyBoard.translatePiece(3, piece)){
+        if(copyBoard.translatePiece(1, tmp)){
             validMoves.add(new Move(piece, "haut"));
-            copyBoard.translatePiece(reverseDirection(3), piece);
+            copyBoard.translatePiece(reverseDirection(1), tmp);
         }
-        if(copyBoard.translatePiece(4, piece)){
+        if(copyBoard.translatePiece(2, tmp)){
             validMoves.add(new Move(piece, "bas"));
-            copyBoard.translatePiece(reverseDirection(4), piece);
+            copyBoard.translatePiece(reverseDirection(2), tmp);
         }
-        if(copyBoard.translatePiece(1, piece)){
+        if(copyBoard.translatePiece(3, tmp)){
             validMoves.add(new Move(piece, "gauche"));
-            copyBoard.translatePiece(reverseDirection(1), piece);
+            copyBoard.translatePiece(reverseDirection(3), tmp);
         }
-        if(copyBoard.translatePiece(2, piece)){
+        if(copyBoard.translatePiece(4, tmp)){
             validMoves.add(new Move(piece, "droite"));
-            copyBoard.translatePiece(reverseDirection(2), piece);
+            copyBoard.translatePiece(reverseDirection(4), tmp);
+        }
+        if(Main.ROTATION_ACTIVATED_SOLVER){ //Si la recherche des rotations pour le solver est activee alors on ajoute les rotations aux coups valides
+            if(copyBoard.rotatePiece(true, tmp)){
+                validMoves.add(new Move(piece, "trueRotation"));
+                copyBoard.rotatePiece(false , tmp);
+            }
+            if(copyBoard.rotatePiece(false, tmp)){
+                validMoves.add(new Move(piece, "falseRotation"));
+                copyBoard.rotatePiece(true, tmp);
+            }
         }
         return validMoves;
     }
 
     public String tradDirection(int direction){
         switch(direction){
-            case 3 :
-                return "haut";
-            case 4 :
-                return "bas";
             case 1 :
-                return "gauche";
+                return "haut";
             case 2 :
+                return "bas";
+            case 3 :
+                return "gauche";
+            case 4 :
                 return "droite";
             default:
                 throw new IllegalStateException("Unexpected value: " + direction);
         }
     }
+
+    public int tradDirection(String direction){
+        switch(direction){
+            case "haut" :
+                return 1;
+            case "bas" :
+                return 2;
+            case "gauche" :
+                return 3;
+            case "droite" :
+                return 4;
+            default:
+                throw new IllegalStateException("Unexpected value: " + direction);
+        }
+    }
+
 
     /*=====================================*/
     /*===== PARTIE EVALUATION SCORE =======*/
@@ -599,6 +680,10 @@ public class Board implements Cloneable{
     /*==============================*/
     /*===== GETTER & SETTERS =======*/
     /*==============================*/
+
+    public boolean isSolverTest() { return solverTest; }
+
+    public void setSolverTest(boolean solverTest) { this.solverTest = solverTest; }
 
     public boolean getDemoMode() {
         return this.demoMode;

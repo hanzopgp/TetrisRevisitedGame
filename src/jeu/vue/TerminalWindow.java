@@ -1,25 +1,41 @@
 package jeu.vue;
 
 import jeu.Main;
+import jeu.computer.Solver;
 import jeu.factory.Piece;
 import jeu.model.Board;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
+/**
+ * Classe représentant l'affichage et les actions lorsque l'on joue dans le terminal
+ */
 public class TerminalWindow {
 
     private Board board;
 
+    /**
+     * Constructeur de l'object TerminalWindow
+     * @param board plateau
+     */
     public TerminalWindow(Board board){
         this.board = board;
     }
 
+    /**
+     * Methode principale de la classe, contenant la boucle de jeu
+     */
     public void terminalUI(){
         if (this.board.getSaveStorage().getSize() > 0) {
             choseSaveOrRandomBoard();
         } else {
-            this.board.fillBoardRandomly();
+            if(this.board.isSolverTest()){
+                this.board.fillBoardRandomly(Main.NB_PIECE_IF_SOLVER);
+            }else{
+                this.board.fillBoardRandomly();
+            }
         }
         //Premier affichage
         System.out.flush();
@@ -31,29 +47,39 @@ public class TerminalWindow {
         boolean isPlaying = true;
         while (nbMove < Main.NB_MOVE_MAX_TERMINAL && isPlaying) {
             //Choix rotation translation new save
-            System.out.println("Voulez-vous :\n(1) Roter une pièce\n(2) Translater une pièce\n(3) Finir la partie\n(4) Sauvegarder la partie");
-            int actionChosen = Main.scannerIntLimit(new Scanner(System.in), 1, 4);
-            //Rotation
-            if (actionChosen == 1) {
-                this.userRotate(nbMove, actionChosen);
-            }
-            //Translation
-            else if (actionChosen == 2) {
-                this.userTranslate(nbMove, actionChosen);
-            }
-            //Fin de partie
-            else if(actionChosen == 3){
-                isPlaying = false;
-            }
-            //sauvegarder la partie
-            else if(actionChosen == 4){
-                int nbSave = 0;
-                this.board.saveBoard(nbSave , board.getSaveStorage());
+            System.out.println("Voulez-vous :\n(1) Roter une pièce\n(2) Translater une pièce\n(3) Finir la partie\n(4) Sauvegarder la partie\n(5) Resoudre la partie");
+            int actionChosen = Main.scannerIntLimit(new Scanner(System.in), 1, 5);
+            switch(actionChosen){
+                case 1 : //Rotation
+                    this.userRotate(nbMove, actionChosen);
+                    break;
+                case 2 : //Translation
+                    this.userTranslate(nbMove, actionChosen);
+                    break;
+                case 3 : //Fin de partie
+                    isPlaying = false;
+                    break;
+                case 4 : //Sauveguarder
+                    int nbSave = 0;
+                    this.board.saveBoard(nbSave , board.getSaveStorage());
+                    break;
+                case 5 : //Resoudre la partie
+                    if(this.board.isSolverTest()){
+                        Solver solver = new Solver(this.board);
+                        solver.execSolve(this.board.getNbMove());
+                        isPlaying = false;
+                    }else{
+                        System.out.println("Solver indisponible en dehors du SolverTest !");
+                    }
+                    break;
             }
         }
         this.board.gameOver();
     }
 
+    /**
+     * Methode gerant les sauveguardes
+     */
     private void choseSaveOrRandomBoard() {
         System.out.println("Voici la liste des sauvegarde : ");
         for(int n = 0; n < this.board.getSaveStorage().getSize(); n++){
@@ -70,10 +96,19 @@ public class TerminalWindow {
             this.board = this.board.getSaveStorage().getSavedBoardByNumber(nbSave);
         }
         else{
-            this.board.fillBoardRandomly();
+            if(this.board.isSolverTest()){
+                this.board.fillBoardRandomly(Main.NB_PIECE_IF_SOLVER);
+            }else{
+                this.board.fillBoardRandomly();
+            }
         }
     }
 
+    /**
+     * Methode permettant une meilleure lisibilite dans la methode principale de cette classe
+     * @param nbMove nombre de move effectue
+     * @param actionChosen action chosit
+     */
     private void userTranslate(int nbMove, int actionChosen) {
         nbMove++;
         //Choix piece que l'on veut manipuler
@@ -89,6 +124,11 @@ public class TerminalWindow {
         displayScore(nbMove, actionChosen);
     }
 
+    /**
+     * Methode permettant une meilleure lisibilite dans la methode principale de cette classe
+     * @param nbMove nombre de move effectue
+     * @param actionChosen action chosit
+     */
     private void userRotate(int nbMove, int actionChosen) {
         //Choix piece que l'on veut manipuler
         Piece currentPiece = chosePiece();
@@ -105,6 +145,11 @@ public class TerminalWindow {
         displayScore(nbMove, actionChosen);
     }
 
+    /**
+     * Methode permettant d'afficher le score actuel
+     * @param nbMove nombre de move
+     * @param actionChosen action choisit
+     */
     private void displayScore(int nbMove, int actionChosen){
         int score = board.evaluate();
         String type = board.defineAreaType(score);
@@ -114,6 +159,10 @@ public class TerminalWindow {
         System.out.println();
     }
 
+    /**
+     * Methode permettant au joueur de selectionner une piece
+     * @return object Piece selectionne
+     */
     private Piece chosePiece() {
         System.out.println("Choisissez une pièce a manipuler : ");
         ArrayList<Piece> listPiece = board.getListPiece();

@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Classe représentant la sauvegarde d'une partie
+ */
 public class Save implements Serializable {
 
     private int id;
@@ -26,7 +29,7 @@ public class Save implements Serializable {
 
     /**
      * Constructeur
-     * @param saveStorage l'object stockant les sauveguardes
+     * @param saveStorage l'object stockant les sauvegardes
      * @param playerName le nom du joueur
      * @param id le numero de la partie
      * @param nbLines le nombre de lignes de la grille

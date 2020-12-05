@@ -8,10 +8,18 @@ import jeu.vue.TerminalWindow;
 
 import java.util.Scanner;
 
+/**
+ * Controller du board actuel
+ */
 public class BoardController {
 
-    private Board board;
+    private final Board board;
 
+    /**
+     * Constructeur
+     * @param model - Board a controler
+     * @param gamemode - Mode de jeu choisi (graphique/terminal)
+     */
     public BoardController(Board model, int gamemode) {
         this.board = model;
         if (gamemode == 2) {
@@ -21,10 +29,16 @@ public class BoardController {
         }
     }
 
+    /**
+     * Methode permettant d'initialiser le board ainsi que le systeme de sauvegarde
+     * @param saveStorage - Instance qui gere les sauvegardes
+     * @param playerName - Pseudo du joueur a sauvegarder
+     * @return Board initialise
+     */
     public static Board definePlateau(SaveStorage saveStorage, String playerName) {
         //Choix difficulte du jeu
-        System.out.println("Choisissez une difficulte :\n(1) Chilling\n(2) Easy\n(3) Medium\n(4) Hard\n(5) Impossible");
-        int difficulty = Main.scannerIntLimit(new Scanner(System.in), 1, 5);
+        System.out.println("Choisissez une difficulte :\n(1) Chilling\n(2) Easy\n(3) Medium\n(4) Hard\n(5) Impossible\n(6) SolverTest");
+        int difficulty = Main.scannerIntLimit(new Scanner(System.in), 1, 6);
         System.out.println("---> Vous avez choisit " + difficulty + "  !");
         System.out.println("=============== DEBUT DE LA PARTIE ===============");
         switch (difficulty) {
@@ -43,11 +57,19 @@ public class BoardController {
             case 5:
                 System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 16, 16));
                 return new Board(16, 16, saveStorage);
+            case 6 : //Utilisation d'une board 10 par 10 avec 8 pieces sans prendre en compte les rotations car algorithme fonctionnel mais non optimise
+                System.out.println("Votre meilleur score sauvegarde est de : " + saveStorage.getHighScoreByPlayerNameAndSize(playerName, 8, 8));
+                Board board = new Board(10, 10, saveStorage);
+                board.setSolverTest(true);
+                return board;
             default:
                 throw new IllegalStateException("Unexpected value: " + difficulty);
         }
     }
 
+    /**
+     * Methode permettant de construire la vue graphique du board actuel
+     */
     public void makePlateauView() {
         this.board.fillBoardHello(this.board.getNbLines());
         MainWindow window = new MainWindow("Tetris - v1.0", 1000, 1000, this.board);
@@ -56,6 +78,9 @@ public class BoardController {
         window.addMouseListener(controle);
     }
 
+    /**
+     * Methode permettant de construire la vue en terminal du board actuel
+     */
     public void makePlateauTerminal() {
         TerminalWindow window = new TerminalWindow(this.board);
         window.terminalUI();

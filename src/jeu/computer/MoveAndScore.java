@@ -1,9 +1,12 @@
 package jeu.computer;
 
+/**
+ * Classe contenant un object Move ainsi que le score associe
+ */
 public class MoveAndScore extends Move implements Cloneable{
 
     private int score;
-    private Move move;
+    private final Move move;
 
     /**
      * Object MoveAndScore contenant un object Move en plus d'un int score

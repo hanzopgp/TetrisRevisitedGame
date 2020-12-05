@@ -9,22 +9,36 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+/**
+ * Controleur du systeme de sauvegarde
+ */
 public class SaveController implements ActionListener {
     private static ArrayList<Save> saves;
     private SaveWindow vue;
     private static Save saveFocused;
     private final MainWindow mainWindow;
 
+    /**
+     * Constructeur
+     * @param mainWindow - Fenetre principale de l'application
+     */
     public SaveController(MainWindow mainWindow){
         saves = mainWindow.getBoard().getSaveStorage().getListSave();
         this.mainWindow = mainWindow;
         this.makeView();
     }
 
+    /**
+     * Methode permettant de construire la vue pour choisir sa sauvegarde
+     */
     public void makeView(){
         this.vue = new SaveWindow("Tetris v1.0", 500, 500, this);
     }
 
+    /**
+     * Charge la sauveguarde sur laquelle on a clique
+     * @param e action a gerer
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton saveFocused = (JButton) e.getSource();
@@ -35,9 +49,13 @@ public class SaveController implements ActionListener {
                 break;
             }
         }
-        this.vue.hide();
+        this.vue.dispose();
         this.mainWindow.loadGame(this.getSaveFocused());
     }
+
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
     public static ArrayList<Save> getSaves() {
         return saves;

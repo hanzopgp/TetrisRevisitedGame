@@ -5,6 +5,9 @@ import jeu.model.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Classe mère de toutes les pièces du jeu
+ */
 abstract class AbstractPiece implements Piece, Serializable, Cloneable {
 
     protected Point centralPiece;
@@ -22,6 +25,15 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
     protected ArrayList<ArrayList<Point>> listState;
     protected String type;
 
+    /**
+     * Constructeur de la piece mere, dans le cas ou la piece finale ne contient qu'une seule largeur.
+     * @param centralPiece - Piece de référence de la piece globale
+     * @param filling - Caractère representant la pièce pour le terminale
+     * @param height - Hauteur de la piece
+     * @param width - Largeur de la piece
+     * @param currentState - Etat dans lequel doit etre instancie la piece (Haut, bas, gauche, droite)
+     * @param type - Type de la piece, necessaire pour le traitement des mouvements par la suite
+     */
     public AbstractPiece(Point centralPiece, String filling, int width, int height, int currentState, String type) {
         this.filling = "[" + filling + "]";
         this.baseFilling = filling;
@@ -45,6 +57,16 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
         this.type = type;
     }
 
+    /**
+     * Constructeur de la piece mere, dans le cas ou la piece finale contient deux largeurs.
+     * @param centralPiece - Piece de référence de la piece globale
+     * @param filling - Caractère representant la pièce pour le terminale
+     * @param height - Hauteur de la piece
+     * @param width - Premiere largeur de la piece
+     * @param width2 - Deuxieme largeur de la piece
+     * @param currentState - Etat dans lequel doit etre instancie la piece (Haut, bas, gauche, droite)
+     * @param type - Type de la piece, necessaire pour le traitement des mouvements par la suite
+     */
     public AbstractPiece(Point centralPiece, String filling, int width, int width2, int height, int currentState, String type) {
         this.filling = "[" + filling + "]";
         this.width = width;
@@ -93,6 +115,11 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
         changeState(this.getCurrentState());
     }
 
+    /**
+     * Change les coordonnes de la piece suivant la direction
+     * @param direction - Direction souhaitee (haut, bas, droite, gauche)
+     * @return la piece que l'on a bouger
+     */
     @Override
     public Piece translation(int direction) {
         switch (direction) {
@@ -109,13 +136,18 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
         }
     }
 
+    /**
+     * Methode permettant de bouger la piece vers des coordonnees X et Y
+     * @param x - Coordonnees X
+     * @param y - Coordonnees Y
+     * @return Piece bougée
+     */
     public Piece move(int x, int y) {
         AbstractPiece newPiece = null;
-//        System.out.println(this.getCurrentState()+"  " +  this.getHeight() + " "  + this.getWidth() + " " + this.getType());
         switch (this.getType()){
             case "T":
                 newPiece = new PieceT(new Point(this.getCentralPiece().getX() + x, this.getCentralPiece().getY() + y),
-                            this.getBaseFilling(), this.getHeight(), this.getWidth(), this.getCurrentState());
+                        this.getBaseFilling(), this.getHeight(), this.getWidth(), this.getCurrentState());
                 break;
             case "O":
                 newPiece = new PieceO(new Point(this.getCentralPiece().getX() + x, this.getCentralPiece().getY() + y),
@@ -145,6 +177,10 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
         return this;
     }
 
+    /**
+     * Méthode permettant de changer l'etat courant d'une piece (haut, bas, droite, gauche)
+     * @param state - Etat a definir
+     */
     public void changeState(int state) {
         switch (state) {
             case 1:
@@ -164,6 +200,10 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
         }
     }
 
+    /**
+     * Permet de cloner l'object Piece
+     * @return un object Piece clone
+     */
     @Override
     public Piece clone(){
         Object o = null;
@@ -175,7 +215,9 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
         return (Piece)o;
     }
 
-    /*===============GETTER & SETTERS===============*/
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
     @Override
     public String getFilling() {

@@ -6,16 +6,24 @@ import jeu.save.Save;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class SaveWindow extends JFrame implements ActionListener {
+/**
+ * Classe représentant la fenetre de choix des parties sauveguarde
+ */
+public class SaveWindow extends JFrame {
 
     private String title;
     private int width;
     private int height;
     private final SaveController controller;
 
+    /**
+     * Constructeur de l'object SaveWindow
+     * @param title titre de la fenêtre de sauvegarde
+     * @param width largeur de la fenêtre
+     * @param height hauteur de la fenêtre
+     * @param controller controller du système de sauvegarde
+     */
     public SaveWindow(String title, int width, int height, SaveController controller) throws HeadlessException {
         this.title = title;
         this.width = width;
@@ -28,6 +36,9 @@ public class SaveWindow extends JFrame implements ActionListener {
         this.setVisible(true);
     }
 
+    /**
+     * Méthode qui affiche la liste les parties sauvegardées
+     */
     public void makeListSaveChoosing(){
         JPanel list = new JPanel();
         list.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -78,9 +89,4 @@ public class SaveWindow extends JFrame implements ActionListener {
         this.height = height;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JButton saveFocused = (JButton) e.getSource();
-        String[] name = saveFocused.getText().replace(" ", "").split("-");
-    }
 }

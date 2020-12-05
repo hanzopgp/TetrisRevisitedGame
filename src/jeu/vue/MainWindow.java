@@ -5,13 +5,16 @@ import jeu.model.Board;
 import jeu.Main;
 import jeu.save.Save;
 
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Classe représentant la construction de la fenêtre de l'application ainsi
+ * que ses différentes actions lors d'un click sur un bouton
+ */
 public class MainWindow extends JFrame implements ActionListener{
 
     private String title;
@@ -22,6 +25,13 @@ public class MainWindow extends JFrame implements ActionListener{
     private final VueScore  score;
     private final ListButton listeButton;
 
+    /**
+     * Constructeur de l'object MainWindow
+     * @param title titre de l'application
+     * @param width largeur de la fenêtre
+     * @param height hauteur de la fenêtre
+     * @param board plateau de l'application
+     */
     public MainWindow(String title, int width, int height, Board board) {
         this.board = board;
         this.title = title;
@@ -31,7 +41,7 @@ public class MainWindow extends JFrame implements ActionListener{
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //grile
+        //grille
         Grid vue = new Grid(board.getColonnes(), board.getLignes(), (this.width) - 100, (this.height) - 100, this.board);
         this.vue = vue;
         //TABLEAU SCORE A DROITE + BOUTONS + ALERTES
@@ -58,6 +68,10 @@ public class MainWindow extends JFrame implements ActionListener{
         this.setFocusable(true);
     }
 
+    /**
+     * Méthode exerçant une action lors d'un click sur un bouton
+     * @param e l'event a gerer
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -73,7 +87,11 @@ public class MainWindow extends JFrame implements ActionListener{
             this.board.setNbMove(0);
             this.board.setPieceFocused(null);
             this.board.clear();
-            this.board.fillBoardRandomly();
+            if(this.board.isSolverTest()){
+                this.board.fillBoardRandomly(Main.NB_PIECE_IF_SOLVER);
+            }else{
+                this.board.fillBoardRandomly();
+            }
             this.vue.update();
         }else if(nameButton.equals("Reset")&& !this.getBoard().getAdded()){
             this.board.setNbMove(0);
@@ -105,6 +123,10 @@ public class MainWindow extends JFrame implements ActionListener{
         requestFocusInWindow();
     }
 
+    /**
+     * Charge une partie sauveguarde
+     * @param s object Save
+     */
     public void loadGame(Save s){
         Board saveChoosen = this.board.getSaveStorage().getSavedBoardByNumber(s.getId());
         this.setBoard(saveChoosen);

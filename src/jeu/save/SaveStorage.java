@@ -5,6 +5,9 @@ import jeu.model.Board;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Classe contenant la liste des sauveguardes
+ */
 public class SaveStorage implements Serializable {
 
     private ArrayList<Save> listSave;

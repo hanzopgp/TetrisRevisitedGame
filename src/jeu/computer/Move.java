@@ -2,6 +2,9 @@ package jeu.computer;
 
 import jeu.factory.Piece;
 
+/**
+ * Classe contenant un object Piece et le type de move associe
+ */
 public class Move {
 
     private Piece piece;

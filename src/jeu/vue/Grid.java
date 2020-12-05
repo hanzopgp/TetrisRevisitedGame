@@ -6,6 +6,10 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
+
+/**
+ * Classe représentant la construction de la grille du jeu.
+ */
 public class Grid extends JPanel {
 
     private final int width;
@@ -16,6 +20,15 @@ public class Grid extends JPanel {
     private final int drawableHeight;
     private Board board;
 
+
+    /**
+     * Constructeur de l'object Grid
+     * @param width Largeur de la grille
+     * @param height Hauteur de la grille
+     * @param drawableWidth Largeur de la grille pour se dessiner
+     * @param drawableHeight Hauteur de la grille pour se dessiner
+     * @param board Plateau de jeu
+     */
     public Grid(int width, int height, int drawableWidth, int drawableHeight, Board board) {
         this.width = width;
         this.height = height;
@@ -28,6 +41,9 @@ public class Grid extends JPanel {
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
+    /**
+     * Méthode représentant la construction de la grille
+     */
     public void make() {
         this.setLayout(new GridLayout(this.height, this.width, 1, 1));
         this.setPreferredSize(new Dimension(this.drawableWidth, this.drawableHeight));
@@ -48,6 +64,9 @@ public class Grid extends JPanel {
         }
     }
 
+    /**
+     * Méthode mettant à jour le board
+     */
     public void update() {
         this.removeAll();
         this.make();
@@ -55,6 +74,11 @@ public class Grid extends JPanel {
         this.repaint();
     }
 
+    /**
+     * Methode permettant d'associer une couleur par piece
+     * @param filling Caractère représentant la pièce pour le terminal
+     * @return couleur du caractère
+     */
     public static Color setPieceColor(String filling) {
         switch (filling) {
             case "[a]":
@@ -96,6 +120,10 @@ public class Grid extends JPanel {
                 return Color.black;
         }
     }
+
+    /*==============================*/
+    /*===== GETTER & SETTERS =======*/
+    /*==============================*/
 
     public void setBoard(Board board){
         this.board = board;

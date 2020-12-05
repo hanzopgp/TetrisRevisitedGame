@@ -6,12 +6,22 @@ import jeu.save.SaveStorage;
 
 import java.util.Scanner;
 
+/**
+ * Controleur principale de l'application
+ */
 public class MainController {
 
+    /**
+     * Constructeur de l'application
+     */
     public MainController() {
 
     }
 
+    /**
+     * Methode permettant de definir le mode de jeu (terminal/graphique)
+     * @param saveStorage - Systeme de sauvegarde a envoyer au futur board
+     */
     public void defineGamemode(SaveStorage saveStorage) {
         System.out.flush();
         System.out.println("=============== CHOIX DES PARAMETRES ===============");
@@ -28,6 +38,12 @@ public class MainController {
         this.constructGame(playerName, gamemode, saveStorage);
     }
 
+    /**
+     * Methode permettant d'initialiser le jeu apres avoir choisi le mode de jeu
+     * @param playerName - Pseudo de l'utilisateur
+     * @param gamemode - Mode de jeu choisi
+     * @param saveStorage - Systeme de sauvegarde a envoyer au board
+     */
     public void constructGame(String playerName, int gamemode, SaveStorage saveStorage) {
         Board board = BoardController.definePlateau(saveStorage, playerName);
         board.setPlayerName(playerName);

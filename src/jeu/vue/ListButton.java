@@ -5,12 +5,19 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 
+/**
+ * Classe affichant tous les boutons dans la fenetre graphique
+ */
 public class ListButton extends JPanel{
 
     private boolean isOver = false;
     private boolean pieceAdded = false;
     private boolean isPlaying = false;
 
+    /**
+     * Constructeur de l'object ListButton
+     * @param window fenetre de l'application
+     */
     public ListButton(MainWindow window){
         //margin sur tout les côté de 10
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -32,6 +39,11 @@ public class ListButton extends JPanel{
         this.prepareButton(leaveGame, window);
     }
 
+    /**
+     * Methode permettant de styliser un bouton
+     * @param button object JButton a styliser
+     * @param window object MainWindow etant la fenetre graphique dans lequel sont les boutons
+     */
     public void prepareButton(JButton button, MainWindow window){
         button.setContentAreaFilled(false);
         button.addActionListener(window);

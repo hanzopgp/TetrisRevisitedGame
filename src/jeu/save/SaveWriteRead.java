@@ -4,6 +4,9 @@ import jeu.Main;
 
 import java.io.*;
 
+/**
+ * Classe permettant l'ecriture et la lecture des sauveguardes dans un fichier
+ */
 public class SaveWriteRead {
 
     /**
