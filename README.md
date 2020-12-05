@@ -49,6 +49,7 @@ Toujours a la racine du projet tapez : `java -jar dist/Tetris-0.1.jar`
 - En mode graphique il faut appuyer sur la touche que l'on veut manipuler, les touches pour manipuler sont :
   - Z,Q,S,D pour les mouvements
   - A,E pour les rotations
+  - T pour que le solver joue un coup
 
 ## Autres details :
 
