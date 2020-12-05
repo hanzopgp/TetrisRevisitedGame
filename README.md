@@ -22,11 +22,11 @@
   
 >On utilise **ant** pour créer le dossier dist contenant l'executable grace au fichier `build.xml`
    
-`ant`
+Ouvrez un terminal a la racine du projet et tapez : `ant`
 
 ### Executer le project :
     
-`java -jar dist/Tetris-0.1.jar`
+Toujours a la racine du projet tapez : `java -jar dist/Tetris-0.1.jar`
 
 ## Fonctionnement du jeu :
 
