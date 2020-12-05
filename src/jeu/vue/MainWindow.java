@@ -93,7 +93,7 @@ public class MainWindow extends JFrame implements ActionListener{
                 this.board.fillBoardRandomly();
             }
             this.vue.update();
-        }else if(nameButton.equals("Reset")&& !this.getBoard().getAdded()){
+        }else if(nameButton.equals("Reset")&& !this.getBoard().isPieceAdded()){
             this.board.setNbMove(0);
             this.board.setOver(false);
             this.board.setDemoMode(true);
@@ -101,7 +101,7 @@ public class MainWindow extends JFrame implements ActionListener{
             this.board.setPieceFocused(null);
             this.board.clear();
             this.board.setPieceAdded(false);
-            this.board.fillBoardHello(this.board.getNbLines());
+            this.board.fillBoardHello(this.board.getLignes());
             this.vue.update();
         }else if(nameButton.equals("Finir la partie")){
             this.board.setOver(true);

@@ -168,8 +168,8 @@ public class Board implements Cloneable{
         if(!saveStorage.hasAlreadyBoard(getBoard())){
             if(this.currentScore > 0){
                 nbSave += saveStorage.getSize();
-                new Save(saveStorage, getPlayerName(), nbSave, getNbLines(),
-                        getNbColumns(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv(), getNbMove());
+                new Save(saveStorage, getPlayerName(), nbSave, getLignes(),
+                        getColonnes(), getBoard(), getCurrentScore(), getListPiece(), getListFilling(), getCptMaxPieceOnBoard(), getListSwv(), getNbMove());
                 try {
                     SaveWriteRead.writeFile("save.txt", saveStorage);
                     System.out.println("PARTIE SAUVEGARDE");
@@ -267,6 +267,10 @@ public class Board implements Cloneable{
         return r.nextInt((max - min) + 1) + min;
     }
 
+    /**
+     * Méthode permettant d'essayer d'ajouter une piece jusqu'a temps qu'elle soit
+     * valide en appelant la fonction Board.addPiece();
+     */
     public void addRandomPiece() throws IllegalStateException {
         boolean isValid = false;
         Piece randomPiece;
@@ -292,7 +296,7 @@ public class Board implements Cloneable{
                     randomPiece = new PieceS(randomCentralPiece, randomFilling, randomPieceHeight, randomPieceWidth, randomPieceWidth2, randomState);
                     break;
                 case 3:
-                    randomPiece = new PieceT(randomCentralPiece, randomFilling, randomPieceHeight, randomPieceWidth, 3);
+                    randomPiece = new PieceT(randomCentralPiece, randomFilling, randomPieceHeight, randomPieceWidth, randomState);
                     break;
                 case 4:
                     randomPiece = new PieceI(randomCentralPiece, randomFilling, randomPieceHeight, 1, randomState);
@@ -313,6 +317,10 @@ public class Board implements Cloneable{
         this.cptMaxPieceOnBoard++;
     }
 
+    /**
+     * Methode permettant de supprimer du board une piece caracterise par une certaine lettre
+     * @param filling - Lettre caracteristant une piece
+     */
     public void delPiece(String filling) {
         for (int i = 0; i < this.nbColumns; i++) {
             for (int j = 0; j < this.nbLines; j++) {
@@ -327,6 +335,14 @@ public class Board implements Cloneable{
     /*===== PARTIE ACTION SUR PIECE =======*/
     /*=====================================*/
 
+    /**
+     * Methode permettant de pivoter une piece dans une direction voulu.
+     * Si la rotation ne peut pas être effectué, on renvoie false et l'action
+     * est annulée
+     * @param direction - Direction voulue
+     * @param piece - Piece à pivoter
+     * @return Boléen de succes / echec
+     */
     public boolean rotatePiece(boolean direction, Piece piece) {
         piece.rotate(direction);
         if (!(this.addPiece(piece))) {
@@ -336,6 +352,13 @@ public class Board implements Cloneable{
         return true;
     }
 
+    /**
+     * Methode permettant de bouger une piece vers une direction voulue.
+     * Si la translation n'est pas possible, on renvoie false et l'action est annulée
+     * @param direction - Direction voulue
+     * @param piece - Piece à pivoter
+     * @return Boléen de succes / echec
+     */
     public boolean translatePiece(int direction, Piece piece) {
         Piece newPiece = piece.translation(direction);
         if (!(this.addPiece(newPiece))) {
@@ -345,6 +368,12 @@ public class Board implements Cloneable{
         return true;
     }
 
+    /**
+     * Methode permettant d'inverser la direction d'une piece.
+     * Ex : Une piece est vers le haut, elle passe vers le bas.
+     * @param direction - Direction actuelle à inverser
+     * @return direction opposée
+     */
     public int reverseDirection(int direction) {
         switch (direction) {
             case (1):
@@ -363,6 +392,11 @@ public class Board implements Cloneable{
     /*===== PARTIE VERIFICATION PLACEMENT =====*/
     /*=========================================*/
 
+    /**
+     * Méthode permettant de tester si un point est correctement placé
+     * @param piece - Point à vérifier
+     * @return Booléen de succes/echec
+     */
     public boolean isSatisfied(Point piece) {
         if (piece.getX() >= 0 && piece.getY() >= 0 && piece.getX() < nbLines && piece.getY() < nbColumns) {
             return this.board.get(piece.getX()).get(piece.getY()).equals("[ ]");
@@ -370,6 +404,11 @@ public class Board implements Cloneable{
         return false;
     }
 
+    /**
+     * Méthode permettant de tester si une piece est correctement placée
+     * @param newPiece - Pièce a vérifier
+     * @return Booléen de succes/echec
+     */
     public boolean isSatisfiedPiece(Piece newPiece) {
         boolean value = false;
         ArrayList<Point> piece = newPiece.getCurrentPiece();
@@ -395,6 +434,9 @@ public class Board implements Cloneable{
     /*===== PARTIE FONCTIONS PRATIQUES =======*/
     /*========================================*/
 
+    /**
+     * Méthode permettant d'afficher la fin d'une partie et de calculer le score obtenu
+     */
     public void gameOver() {
         System.out.println("=============== SCORE DE LA PARTIE ===============");
         int score = evaluate();
@@ -403,6 +445,10 @@ public class Board implements Cloneable{
         System.out.println("=============== FIN DE LA PARTIE ===============");
     }
 
+    /**
+     * Méthode permettant d'incrémenter le compteur de mouvements pour la partie graphique
+     * @param e - Event à gérer
+     */
     public void movePlus(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_S:
@@ -414,6 +460,9 @@ public class Board implements Cloneable{
         }
     }
 
+    /**
+     * Methode permettant d'afficher la grille dans le terminal
+     */
     @Override
     public String toString() {
         for (int i = 0; i < this.nbLines; i++) {
@@ -429,6 +478,10 @@ public class Board implements Cloneable{
     /*===== PARTIE IA =======*/
     /*=======================*/
 
+    /**
+     * Methode permettant de cloner l'object Board
+     * @return l'objet Board clone
+     */
     @Override
     public Board clone(){
         Object o = null;
@@ -440,6 +493,11 @@ public class Board implements Cloneable{
         return (Board)o;
     }
 
+    /**
+     * Méthode permettant d'effectuer une copie des pièces du board actuel à des fins
+     * de traitement pour l'IA.
+     * @return Copie des pieces actuelles sur le board
+     */
     public ArrayList<Piece> copyListPiece(){
         ArrayList<Piece> copyListPiece = new ArrayList<>();
         for(Piece p : this.listPiece){
@@ -448,6 +506,11 @@ public class Board implements Cloneable{
         return copyListPiece;
     }
 
+    /**
+     * Methode permettant de retourner une copie du board actuel à des fins de
+     * traitement pour l'IA
+     * @return Copie du board.
+     */
     public ArrayList<ArrayList<String>> copyBoard(){
         ArrayList<ArrayList<String>>  copyBoard = new ArrayList<>();
         for(ArrayList<String> list : new ArrayList<>(this.board)){
@@ -459,52 +522,59 @@ public class Board implements Cloneable{
         return copyBoard;
     }
 
-    public void makeMove(Move move){
-        switch (move.getTypeMove()){
-            case "haut" :
-                this.translatePiece(1, move.getPiece());
-                break;
-            case "bas" :
-                this.translatePiece(2, move.getPiece());
-                break;
-            case "gauche" :
-                this.translatePiece(3, move.getPiece());
-                break;
-            case "droite" :
-                this.translatePiece(4, move.getPiece());
-                break;
-            case "trueRotation" :
-                this.rotatePiece(true, move.getPiece());
-                break;
-            case "falseRotation" :
-                this.rotatePiece(false, move.getPiece());
-                break;
-        }
-    }
+//    Methodes pouvant être utile pour simplifier le code mais non implementees.
+//    public void makeMove(Move move){
+//        switch (move.getTypeMove()){
+//            case "haut" :
+//                this.translatePiece(1, move.getPiece());
+//                break;
+//            case "bas" :
+//                this.translatePiece(2, move.getPiece());
+//                break;
+//            case "gauche" :
+//                this.translatePiece(3, move.getPiece());
+//                break;
+//            case "droite" :
+//                this.translatePiece(4, move.getPiece());
+//                break;
+//            case "trueRotation" :
+//                this.rotatePiece(true, move.getPiece());
+//                break;
+//            case "falseRotation" :
+//                this.rotatePiece(false, move.getPiece());
+//                break;
+//        }
+//    }
+//
+//    public void makeInverseMove(Move move){
+//        switch (move.getTypeMove()){
+//            case "haut" :
+//                this.translatePiece(reverseDirection(1), move.getPiece());
+//                break;
+//            case "bas" :
+//                this.translatePiece(reverseDirection(2), move.getPiece());
+//                break;
+//            case "gauche" :
+//                this.translatePiece(reverseDirection(3), move.getPiece());
+//                break;
+//            case "droite" :
+//                this.translatePiece(reverseDirection(4), move.getPiece());
+//                break;
+//            case "trueRotation" :
+//                this.rotatePiece(false, move.getPiece());
+//                break;
+//            case "falseRotation" :
+//                this.rotatePiece(true, move.getPiece());
+//                break;
+//        }
+//    }
 
-    public void makeInverseMove(Move move){
-        switch (move.getTypeMove()){
-            case "haut" :
-                this.translatePiece(reverseDirection(1), move.getPiece());
-                break;
-            case "bas" :
-                this.translatePiece(reverseDirection(2), move.getPiece());
-                break;
-            case "gauche" :
-                this.translatePiece(reverseDirection(3), move.getPiece());
-                break;
-            case "droite" :
-                this.translatePiece(reverseDirection(4), move.getPiece());
-                break;
-            case "trueRotation" :
-                this.rotatePiece(false, move.getPiece());
-                break;
-            case "falseRotation" :
-                this.rotatePiece(true, move.getPiece());
-                break;
-        }
-    }
-
+    /**
+     * Méthode permettant de retourner tout les mouvements possibles d'une piece
+     * a partir de sa position actuelle
+     * @param piece - Piece à manipuler
+     * @return Liste de tout les mouvements possibles.
+     */
     public ArrayList<Move> getValidMoves(Piece piece){
         Board copyBoard = this.clone();
         Piece tmp = piece.clone();
@@ -539,21 +609,11 @@ public class Board implements Cloneable{
         return validMoves;
     }
 
-    public String tradDirection(int direction){
-        switch(direction){
-            case 1 :
-                return "haut";
-            case 2 :
-                return "bas";
-            case 3 :
-                return "gauche";
-            case 4 :
-                return "droite";
-            default:
-                throw new IllegalStateException("Unexpected value: " + direction);
-        }
-    }
-
+    /**
+     * Méthode permettant de traduire en entier une direction voulue
+     * @param direction - Direction voulue
+     * @return Entier correspondant
+     */
     public int tradDirection(String direction){
         switch(direction){
             case "haut" :
@@ -569,17 +629,26 @@ public class Board implements Cloneable{
         }
     }
 
-
     /*=====================================*/
     /*===== PARTIE EVALUATION SCORE =======*/
     /*=====================================*/
 
+    /**
+     * Méthode permettant d'évaluer le score actuel pendant la partie
+     * @return Score actuel
+     */
     public int evaluate() {
         int currentScore = areaMax(getMatrix());
         this.currentScore = currentScore;
         return currentScore;
     }
 
+    /**
+     * Méthode permettant de définir le type de l'aire de pièces la plus grosse
+     * du board actuel
+     * @param max - score maximum
+     * @return le type d'aire
+     */
     public String defineAreaType(int max) {
         int maxX = 0;
         int maxY = 0;
@@ -602,6 +671,12 @@ public class Board implements Cloneable{
         }
     }
 
+    /**
+     * Methode permettant de recuperer l'aire maximum d'un
+     * rectange forme de 1 dans une matrice binaire
+     * @param matrix matrice binaire
+     * @return la plus grosse aire rectangulaire
+     */
     public int areaMax(int[][] matrix) {
         int nbLine = matrix.length;
         int nbColumn = matrix[0].length;
@@ -629,6 +704,11 @@ public class Board implements Cloneable{
         return areaMax;
     }
 
+    /**
+     * Methode permettant de retourner l'aire maximum pour une colonne donnee
+     * @param columnSize la plus grande colonne
+     * @return maximum l'aire maximum trouvee
+     */
     private int maxAreaHeight(int[] columnSize) {
         Stack<Integer> stack = new Stack<>();
         int lineSize = 0;
@@ -639,30 +719,32 @@ public class Board implements Cloneable{
                 lineSize++;
             } else {
                 int area;
-                int x = stack.pop();
+                int stackElement = stack.pop();
                 PointWithScore pws = new PointWithScore(new Point(0,0), 0);
                 if (stack.isEmpty()) {
-                    area = columnSize[x] * lineSize;
+                    area = columnSize[stackElement] * lineSize;
                     pws.setX(lineSize);
                     //System.out.println("Taille des lignes : " + lineSize);
                 } else {
-                    area = columnSize[x] * (lineSize - stack.peek() - 1);
+                    area = columnSize[stackElement] * (lineSize - stack.peek() - 1);
                     pws.setX(lineSize - stack.peek() - 1);
                     //System.out.println("Taille des lignes : " + (lineSize - stack.peek() - 1));
                 }
                 //System.out.println("Taille des colonnes : " + columnSize[x]);
                 //System.out.println("Aires : " + area);
-                //Suivie des valeurs
-                pws.setScore(area);
-                pws.setY(columnSize[x]);
+                pws.setScore(area); //Suivie des valeurs
+                pws.setY(columnSize[stackElement]);
                 this.listSwv.add(pws);
-                maximum = Math.max(maximum, area);
+                maximum = Math.max(maximum, area); //Recuperation de la valeur maximum
             }
         }
         return maximum;
     }
 
-    //Fonction qui transforme notre plateau en matrice pour facilite le calcule du score
+    /**
+     * Fonction qui transforme notre plateau en matrice binaire pour facilite le calcule du score
+     * @return Matrice
+     */
     public int[][] getMatrix() {
         int[][] matrix = new int[this.nbLines][this.nbColumns];
         for (int i = 0; i < this.nbLines; i++) {
@@ -681,58 +763,84 @@ public class Board implements Cloneable{
     /*===== GETTER & SETTERS =======*/
     /*==============================*/
 
-    public boolean isSolverTest() { return solverTest; }
-
-    public void setSolverTest(boolean solverTest) { this.solverTest = solverTest; }
-
     public boolean getDemoMode() {
-        return this.demoMode;
+        return demoMode;
     }
 
     public void setDemoMode(boolean demoMode) {
         this.demoMode = demoMode;
     }
 
-    public ArrayList<PointWithScore> getListSwv() { return listSwv; }
-
-    public String getPlayerName() {
-        return playerName;
+    public boolean getIsOver() {
+        return isOver;
     }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
+    public void setOver(boolean over) {
+        isOver = over;
     }
 
-    public int getCurrentScore() {
-        return currentScore;
+    public boolean isPieceAdded() {
+        return pieceAdded;
     }
 
-    public void setCurrentScore(int currentScore) {
-        this.currentScore = currentScore;
+    public void setPieceAdded(boolean pieceAdded) {
+        this.pieceAdded = pieceAdded;
     }
 
-    public String getCase(int x, int y) {
-        return this.board.get(x).get(y);
+    public boolean getIsPlaying() {
+        return isPlaying;
     }
 
-    public ArrayList<ArrayList<String>> getBoard() {
-        return this.board;
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 
-    public int getColonnes() {
-        return this.nbColumns;
+    public boolean getIsNewGame() {
+        return newGame;
     }
 
-    public int getLignes() {
-        return this.nbLines;
+    public void setNewGame(boolean newGame) {
+        this.newGame = newGame;
     }
 
-    public void setBoard(ArrayList<ArrayList<String>> board) {
-        this.board = board;
+    public boolean getIsSolving() {
+        return isSolving;
     }
 
-    public int getCptMaxPieceOnBoard() {
-        return cptMaxPieceOnBoard;
+    public void setSolving(boolean solving) {
+        isSolving = solving;
+    }
+
+    public boolean isSolverTest() {
+        return solverTest;
+    }
+
+    public void setSolverTest(boolean solverTest) {
+        this.solverTest = solverTest;
+    }
+
+    public Piece getPieceFocused() {
+        return pieceFocused;
+    }
+
+    public void setPieceFocused(Piece pieceFocused) {
+        this.pieceFocused = pieceFocused;
+    }
+
+    public int getNbMove() {
+        return nbMove;
+    }
+
+    public void setNbMove(int nbMove) {
+        this.nbMove = nbMove;
+    }
+
+    public SaveStorage getSaveStorage() {
+        return saveStorage;
+    }
+
+    public void setSaveStorage(SaveStorage saveStorage) {
+        this.saveStorage = saveStorage;
     }
 
     public static AtomicInteger getNextId() {
@@ -751,35 +859,39 @@ public class Board implements Cloneable{
         this.id = id;
     }
 
-    public void setListPiece(ArrayList<Piece> listPiece) {
-        this.listPiece = listPiece;
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public int getLignes() {
+        return nbLines;
+    }
+
+    public int getColonnes() {
+        return nbColumns;
+    }
+
+    public ArrayList<ArrayList<String>> getBoard() {
+        return board;
+    }
+
+    public void setBoard(ArrayList<ArrayList<String>> board) {
+        this.board = board;
     }
 
     public ArrayList<Piece> getListPiece() {
         return listPiece;
     }
 
-    public int getNbLines() {
-        return nbLines;
-    }
-
-    public int getNbColumns() {
-        return nbColumns;
+    public void setListPiece(ArrayList<Piece> listPiece) {
+        this.listPiece = listPiece;
     }
 
     public ArrayList<String> getListFilling() {
-        return listFilling;
-    }
-
-    public void setCptMaxPieceOnBoard(int cptMaxPieceOnBoard) {
-        this.cptMaxPieceOnBoard = cptMaxPieceOnBoard;
-    }
-
-    public void setListSwv(ArrayList<PointWithScore> listSwv) {
-        this.listSwv = listSwv;
-    }
-
-    public ArrayList<String> getListRemplissage() {
         return listFilling;
     }
 
@@ -787,68 +899,27 @@ public class Board implements Cloneable{
         this.listFilling = listFilling;
     }
 
-    public SaveStorage getSaveStorage() {
-        return saveStorage;
+    public int getCptMaxPieceOnBoard() {
+        return cptMaxPieceOnBoard;
     }
 
-    public void setSaveStorage(SaveStorage saveStorage) {
-        this.saveStorage = saveStorage;
+    public void setCptMaxPieceOnBoard(int cptMaxPieceOnBoard) {
+        this.cptMaxPieceOnBoard = cptMaxPieceOnBoard;
     }
 
-    public int getNbMove() {
-        return this.nbMove;
-    }
-    
-    public Piece getPieceFocused(){
-        return this.pieceFocused;
+    public ArrayList<PointWithScore> getListSwv() {
+        return listSwv;
     }
 
-    public boolean getIsOver(){
-        return this.isOver;
+    public void setListSwv(ArrayList<PointWithScore> listSwv) {
+        this.listSwv = listSwv;
     }
 
-    public boolean getAdded(){
-        return this.pieceAdded;
+    public int getCurrentScore() {
+        return currentScore;
     }
 
-    public boolean getIsPlaying(){
-        return this.isPlaying;
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
     }
-
-    public boolean getNewGame(){
-        return this.newGame;
-    }
-
-    public boolean getIsSolving(){
-        return this.isSolving;
-    }
-    
-    public void setPieceFocused(Piece pieceFocused) {
-        this.pieceFocused = pieceFocused;
-    }
-
-    public void setNewGame(boolean newGame) {
-        this.newGame = newGame;
-    }
-
-    public void setOver(boolean isOver) {
-        this.isOver = isOver;
-    }
-
-    public void setPieceAdded(boolean pieceAdded) {
-        this.pieceAdded = pieceAdded;
-    }
-
-    public void setPlaying(boolean isPlaying) {
-        this.isPlaying = isPlaying;
-    }
-
-    public void setSolving(boolean isSolving) {
-        this.isSolving = isSolving;
-    }
-
-    public void setNbMove(int nbMove) {
-        this.nbMove = nbMove;
-    }
-
 }

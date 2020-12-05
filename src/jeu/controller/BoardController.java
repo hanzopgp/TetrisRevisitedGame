@@ -71,7 +71,7 @@ public class BoardController {
      * Methode permettant de construire la vue graphique du board actuel
      */
     public void makePlateauView() {
-        this.board.fillBoardHello(this.board.getNbLines());
+        this.board.fillBoardHello(this.board.getLignes());
         MainWindow window = new MainWindow("Tetris - v1.0", 1000, 1000, this.board);
         GUIController controle = new GUIController(window);
         window.addKeyListener(controle);

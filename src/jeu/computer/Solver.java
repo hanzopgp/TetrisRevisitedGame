@@ -72,7 +72,7 @@ public class Solver {
 
     /**
      * Algorithme permettant d'aller chercher les scores qui pourront etre atteint apres <depth> coups joues,
-     * puis de les rameners coups par coups jusqu'a l'etat de la partie actuelle afin d'effectuer le meilleur
+     * puis de les ramener coups par coups jusqu'a l'etat de la partie actuelle afin d'effectuer le meilleur
      * coup en profondeur 0 (present).
      * @param depth nombre de coups d'avances explores
      * @param board la grille que l'on veut resoudre
