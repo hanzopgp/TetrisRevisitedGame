@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Classe mère de toutes les pièces du jeu
+ * Classe mere de toutes les pieces du jeu
  */
 abstract class AbstractPiece implements Piece, Serializable, Cloneable {
 
@@ -27,8 +27,8 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
 
     /**
      * Constructeur de la piece mere, dans le cas ou la piece finale ne contient qu'une seule largeur.
-     * @param centralPiece - Piece de référence de la piece globale
-     * @param filling - Caractère representant la pièce pour le terminale
+     * @param centralPiece - Piece de reference de la piece globale
+     * @param filling - Caractere representant la piece pour le terminale
      * @param height - Hauteur de la piece
      * @param width - Largeur de la piece
      * @param currentState - Etat dans lequel doit etre instancie la piece (Haut, bas, gauche, droite)
@@ -59,8 +59,8 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
 
     /**
      * Constructeur de la piece mere, dans le cas ou la piece finale contient deux largeurs.
-     * @param centralPiece - Piece de référence de la piece globale
-     * @param filling - Caractère representant la pièce pour le terminale
+     * @param centralPiece - Piece de reference de la piece globale
+     * @param filling - Caractere representant la piece pour le terminale
      * @param height - Hauteur de la piece
      * @param width - Premiere largeur de la piece
      * @param width2 - Deuxieme largeur de la piece
@@ -140,7 +140,7 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
      * Methode permettant de bouger la piece vers des coordonnees X et Y
      * @param x - Coordonnees X
      * @param y - Coordonnees Y
-     * @return Piece bougée
+     * @return Piece bougee
      */
     public Piece move(int x, int y) {
         AbstractPiece newPiece = null;
@@ -178,7 +178,7 @@ abstract class AbstractPiece implements Piece, Serializable, Cloneable {
     }
 
     /**
-     * Méthode permettant de changer l'etat courant d'une piece (haut, bas, droite, gauche)
+     * Methode permettant de changer l'etat courant d'une piece (haut, bas, droite, gauche)
      * @param state - Etat a definir
      */
     public void changeState(int state) {

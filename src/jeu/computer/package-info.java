@@ -1,5 +1,5 @@
 /**
- * Package qui contient l'ensemble des classes utiles à l'IA développée
+ * Package qui contient l'ensemble des classes utiles a l'IA developpee
  *
  * @since 1.0
  * @version 1.0

@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 
 /**
- * Classe représentant l'affichage et les actions lorsque l'on joue dans le terminal
+ * Classe representant l'affichage et les actions lorsque l'on joue dans le terminal
  */
 public class TerminalWindow {
 
@@ -47,7 +47,7 @@ public class TerminalWindow {
         boolean isPlaying = true;
         while (nbMove < Main.NB_MOVE_MAX_TERMINAL && isPlaying) {
             //Choix rotation translation new save
-            System.out.println("Voulez-vous :\n(1) Roter une pièce\n(2) Translater une pièce\n(3) Finir la partie\n(4) Sauvegarder la partie\n(5) Resoudre la partie");
+            System.out.println("Voulez-vous :\n(1) Roter une piece\n(2) Translater une piece\n(3) Finir la partie\n(4) Sauvegarder la partie\n(5) Resoudre la partie");
             int actionChosen = Main.scannerIntLimit(new Scanner(System.in), 1, 5);
             switch(actionChosen){
                 case 1 : //Rotation
@@ -164,7 +164,7 @@ public class TerminalWindow {
      * @return object Piece selectionne
      */
     private Piece chosePiece() {
-        System.out.println("Choisissez une pièce a manipuler : ");
+        System.out.println("Choisissez une piece a manipuler : ");
         ArrayList<Piece> listPiece = board.getListPiece();
         for (int i = 1; i < listPiece.size() + 1; i++) { //Affichage en decalage, simplification pour l'utilisateur
             System.out.print("(" + (i) + ") Piece : " + listPiece.get(i - 1).getFilling() + "  |  ");

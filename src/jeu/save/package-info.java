@@ -1,5 +1,5 @@
 /**
- * Package qui contient l'ensemble des classes destinées au système de
+ * Package qui contient l'ensemble des classes destinees au systeme de
  * sauvegarde de l'application
  *
  * @since 1.0

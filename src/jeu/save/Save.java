@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Classe représentant la sauvegarde d'une partie
+ * Classe representant la sauvegarde d'une partie
  */
 public class Save implements Serializable {
 

@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
- * Classe représentant la fenetre de choix des parties sauveguarde
+ * Classe representant la fenetre de choix des parties sauveguarde
  */
 public class SaveWindow extends JFrame {
 
@@ -19,10 +19,10 @@ public class SaveWindow extends JFrame {
 
     /**
      * Constructeur de l'object SaveWindow
-     * @param title titre de la fenêtre de sauvegarde
-     * @param width largeur de la fenêtre
-     * @param height hauteur de la fenêtre
-     * @param controller controller du système de sauvegarde
+     * @param title titre de la fenetre de sauvegarde
+     * @param width largeur de la fenetre
+     * @param height hauteur de la fenetre
+     * @param controller controller du systeme de sauvegarde
      */
     public SaveWindow(String title, int width, int height, SaveController controller) throws HeadlessException {
         this.title = title;
@@ -37,14 +37,14 @@ public class SaveWindow extends JFrame {
     }
 
     /**
-     * Méthode qui affiche la liste les parties sauvegardées
+     * Methode qui affiche la liste les parties sauvegardees
      */
     public void makeListSaveChoosing(){
         JPanel list = new JPanel();
         list.setBorder(new EmptyBorder(10, 10, 10, 10));
         if(SaveController.getSaves().size() == 0){
             list.setLayout(new GridLayout(1, 1));
-            list.add(new JLabel("Aucune sauvegarde enregistrée ..."));
+            list.add(new JLabel("Aucune sauvegarde enregistree ..."));
         }else{
             list.setLayout(new GridLayout(SaveController.getSaves().size(), 1, 10, 10));
             for(Save s : SaveController.getSaves()){

@@ -3,7 +3,7 @@ package jeu.vue;
 import javax.swing.*;
 
 /**
- * Classe représentant un morceau de la pièce
+ * Classe representant un morceau de la piece
  */
 public class Case extends JLabel {
 

@@ -268,7 +268,7 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Méthode permettant d'essayer d'ajouter une piece jusqu'a temps qu'elle soit
+     * Methode permettant d'essayer d'ajouter une piece jusqu'a temps qu'elle soit
      * valide en appelant la fonction Board.addPiece();
      */
     public void addRandomPiece() throws IllegalStateException {
@@ -337,11 +337,11 @@ public class Board implements Cloneable{
 
     /**
      * Methode permettant de pivoter une piece dans une direction voulu.
-     * Si la rotation ne peut pas être effectué, on renvoie false et l'action
-     * est annulée
+     * Si la rotation ne peut pas etre effectue, on renvoie false et l'action
+     * est annulee
      * @param direction - Direction voulue
-     * @param piece - Piece à pivoter
-     * @return Boléen de succes / echec
+     * @param piece - Piece a pivoter
+     * @return Boleen de succes / echec
      */
     public boolean rotatePiece(boolean direction, Piece piece) {
         piece.rotate(direction);
@@ -354,10 +354,10 @@ public class Board implements Cloneable{
 
     /**
      * Methode permettant de bouger une piece vers une direction voulue.
-     * Si la translation n'est pas possible, on renvoie false et l'action est annulée
+     * Si la translation n'est pas possible, on renvoie false et l'action est annulee
      * @param direction - Direction voulue
-     * @param piece - Piece à pivoter
-     * @return Boléen de succes / echec
+     * @param piece - Piece a pivoter
+     * @return Boleen de succes / echec
      */
     public boolean translatePiece(int direction, Piece piece) {
         Piece newPiece = piece.translation(direction);
@@ -371,8 +371,8 @@ public class Board implements Cloneable{
     /**
      * Methode permettant d'inverser la direction d'une piece.
      * Ex : Une piece est vers le haut, elle passe vers le bas.
-     * @param direction - Direction actuelle à inverser
-     * @return direction opposée
+     * @param direction - Direction actuelle a inverser
+     * @return direction opposee
      */
     public int reverseDirection(int direction) {
         switch (direction) {
@@ -393,9 +393,9 @@ public class Board implements Cloneable{
     /*=========================================*/
 
     /**
-     * Méthode permettant de tester si un point est correctement placé
-     * @param piece - Point à vérifier
-     * @return Booléen de succes/echec
+     * Methode permettant de tester si un point est correctement place
+     * @param piece - Point a verifier
+     * @return Booleen de succes/echec
      */
     public boolean isSatisfied(Point piece) {
         if (piece.getX() >= 0 && piece.getY() >= 0 && piece.getX() < nbLines && piece.getY() < nbColumns) {
@@ -405,9 +405,9 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Méthode permettant de tester si une piece est correctement placée
-     * @param newPiece - Pièce a vérifier
-     * @return Booléen de succes/echec
+     * Methode permettant de tester si une piece est correctement placee
+     * @param newPiece - Piece a verifier
+     * @return Booleen de succes/echec
      */
     public boolean isSatisfiedPiece(Piece newPiece) {
         boolean value = false;
@@ -435,7 +435,7 @@ public class Board implements Cloneable{
     /*========================================*/
 
     /**
-     * Méthode permettant d'afficher la fin d'une partie et de calculer le score obtenu
+     * Methode permettant d'afficher la fin d'une partie et de calculer le score obtenu
      */
     public void gameOver() {
         System.out.println("=============== SCORE DE LA PARTIE ===============");
@@ -446,8 +446,8 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Méthode permettant d'incrémenter le compteur de mouvements pour la partie graphique
-     * @param e - Event à gérer
+     * Methode permettant d'incrementer le compteur de mouvements pour la partie graphique
+     * @param e - Event a gerer
      */
     public void movePlus(KeyEvent e) {
         switch (e.getKeyCode()) {
@@ -494,7 +494,7 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Méthode permettant d'effectuer une copie des pièces du board actuel à des fins
+     * Methode permettant d'effectuer une copie des pieces du board actuel a des fins
      * de traitement pour l'IA.
      * @return Copie des pieces actuelles sur le board
      */
@@ -507,7 +507,7 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Methode permettant de retourner une copie du board actuel à des fins de
+     * Methode permettant de retourner une copie du board actuel a des fins de
      * traitement pour l'IA
      * @return Copie du board.
      */
@@ -522,7 +522,7 @@ public class Board implements Cloneable{
         return copyBoard;
     }
 
-//    Methodes pouvant être utile pour simplifier le code mais non implementees.
+//    Methodes pouvant etre utile pour simplifier le code mais non implementees.
 //    public void makeMove(Move move){
 //        switch (move.getTypeMove()){
 //            case "haut" :
@@ -570,9 +570,9 @@ public class Board implements Cloneable{
 //    }
 
     /**
-     * Méthode permettant de retourner tout les mouvements possibles d'une piece
+     * Methode permettant de retourner tout les mouvements possibles d'une piece
      * a partir de sa position actuelle
-     * @param piece - Piece à manipuler
+     * @param piece - Piece a manipuler
      * @return Liste de tout les mouvements possibles.
      */
     public ArrayList<Move> getValidMoves(Piece piece){
@@ -610,7 +610,7 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Méthode permettant de traduire en entier une direction voulue
+     * Methode permettant de traduire en entier une direction voulue
      * @param direction - Direction voulue
      * @return Entier correspondant
      */
@@ -634,7 +634,7 @@ public class Board implements Cloneable{
     /*=====================================*/
 
     /**
-     * Méthode permettant d'évaluer le score actuel pendant la partie
+     * Methode permettant d'evaluer le score actuel pendant la partie
      * @return Score actuel
      */
     public int evaluate() {
@@ -644,7 +644,7 @@ public class Board implements Cloneable{
     }
 
     /**
-     * Méthode permettant de définir le type de l'aire de pièces la plus grosse
+     * Methode permettant de definir le type de l'aire de pieces la plus grosse
      * du board actuel
      * @param max - score maximum
      * @return le type d'aire

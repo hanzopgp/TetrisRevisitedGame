@@ -20,8 +20,8 @@ public class SaveStorage implements Serializable {
     }
 
     /**
-     * Résumé du rôle de la méthode.
-     * Commentaires détaillés sur le role de la methode
+     * Resume du role de la methode.
+     * Commentaires detailles sur le role de la methode
      * @param save la sauveguarde a ajouter
      */
     public void addSave(Save save) {

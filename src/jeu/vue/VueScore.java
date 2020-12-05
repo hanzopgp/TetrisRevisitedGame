@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Classe représentant l'affichage du score
+ * Classe representant l'affichage du score
  */
 public class VueScore extends JPanel {
 

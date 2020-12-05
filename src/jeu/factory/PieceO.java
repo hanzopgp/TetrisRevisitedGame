@@ -3,15 +3,15 @@ package jeu.factory;
 import jeu.model.Point;
 
 /**
- * Classe représentant une pièce de forme "O",
- * qui hérite de la classe mère AbstractPiece
+ * Classe representant une piece de forme "O",
+ * qui herite de la classe mere AbstractPiece
  */
 public class PieceO extends AbstractPiece {
 
     /**
      * Constructeur
-     * @param centralPiece - Piece de référence de la piece globale
-     * @param filling - Caractère representant la pièce pour le terminale
+     * @param centralPiece - Piece de reference de la piece globale
+     * @param filling - Caractere representant la piece pour le terminale
      * @param height - Hauteur de la piece
      * @param width - Largeur de la piece
      * @param currentState - Etat dans lequel doit etre instancie la piece (Haut, bas, gauche, droite)
@@ -24,11 +24,11 @@ public class PieceO extends AbstractPiece {
     }
 
     /**
-     * Méthode permettant de construire tout les etats possibles de la piece
+     * Methode permettant de construire tout les etats possibles de la piece
      * (haut, bas, gauche, droite) avec un ensemble de "Point" qui construisent
      * la piece visible sur terminal ou sur interface graphique.
      *
-     * De ce fait, chaque rotation a donc un etat attribué, ce qui rend plus simple
+     * De ce fait, chaque rotation a donc un etat attribue, ce qui rend plus simple
      * la gestion de celles-ci.
      */
     public void constructAllStates(){

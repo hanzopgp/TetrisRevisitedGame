@@ -12,8 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Classe représentant la construction de la fenêtre de l'application ainsi
- * que ses différentes actions lors d'un click sur un bouton
+ * Classe representant la construction de la fenetre de l'application ainsi
+ * que ses differentes actions lors d'un click sur un bouton
  */
 public class MainWindow extends JFrame implements ActionListener{
 
@@ -28,8 +28,8 @@ public class MainWindow extends JFrame implements ActionListener{
     /**
      * Constructeur de l'object MainWindow
      * @param title titre de l'application
-     * @param width largeur de la fenêtre
-     * @param height hauteur de la fenêtre
+     * @param width largeur de la fenetre
+     * @param height hauteur de la fenetre
      * @param board plateau de l'application
      */
     public MainWindow(String title, int width, int height, Board board) {
@@ -69,7 +69,7 @@ public class MainWindow extends JFrame implements ActionListener{
     }
 
     /**
-     * Méthode exerçant une action lors d'un click sur un bouton
+     * Methode exercant une action lors d'un click sur un bouton
      * @param e l'event a gerer
      */
     @Override

@@ -35,11 +35,11 @@ public class Main {
         SaveStorage saveStorage = SaveWriteRead.readFile(Main.FILE_NAME);
         ArrayList<Save> listSave;
         if (saveStorage == null) {
-            System.out.println("Nous n'avons pas trouvé de sauvegarde sur votre ordinateur !");
+            System.out.println("Nous n'avons pas trouve de sauvegarde sur votre ordinateur !");
             saveStorage = new SaveStorage();
         }
         else{
-            System.out.println("Nous avons trouvé " + saveStorage.getSize() + " sauvegardes sur votre ordinateur ! ");
+            System.out.println("Nous avons trouve " + saveStorage.getSize() + " sauvegardes sur votre ordinateur ! ");
             listSave = saveStorage.getListSave();
             for (Save save : listSave) {
                 System.out.println(save);
@@ -52,8 +52,8 @@ public class Main {
 
     /**
      * Verifie que l'input est un int
-     * @param scanner - Scanner à utiliser
-     * @param errormsg - Message d'erreur à envoyer
+     * @param scanner - Scanner a utiliser
+     * @param errormsg - Message d'erreur a envoyer
      * @return Valeur saisie
      */
     public static int scannerInt(Scanner scanner, String errormsg) {
@@ -68,8 +68,8 @@ public class Main {
 
     /**
      * Verifie que l'input est un string
-     * @param scanner - Scanner à utiliser
-     * @param errormsg - Message d'erreur à envoyer
+     * @param scanner - Scanner a utiliser
+     * @param errormsg - Message d'erreur a envoyer
      * @return Valeur saisie
      */
     public static String scannerString(Scanner scanner, String errormsg) {
@@ -82,7 +82,7 @@ public class Main {
 
     /**
      * Verifie que l'input est un int et qu'il est entre min et max
-     * @param scanner - Scanner à utiliser
+     * @param scanner - Scanner a utiliser
      * @param min - Valeur minimale
      * @param max - Valeur maximale
      * @return Valeur saisie

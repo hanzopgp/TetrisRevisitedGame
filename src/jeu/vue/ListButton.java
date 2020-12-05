@@ -19,7 +19,7 @@ public class ListButton extends JPanel{
      * @param window fenetre de l'application
      */
     public ListButton(MainWindow window){
-        //margin sur tout les côté de 10
+        //margin sur tout les cote de 10
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
         this.setLayout(new GridLayout(9, 1, 5, 5));
         this.setBackground(Color.WHITE);
