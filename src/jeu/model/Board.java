@@ -440,8 +440,9 @@ public class Board implements Cloneable{
     public void gameOver() {
         System.out.println("=============== SCORE DE LA PARTIE ===============");
         int score = evaluate();
-        String type = defineAreaType(score);
-        System.out.println("---> Aire la plus grand : " + score + " cases, de type : " + type);
+        //String type = defineAreaType(score);
+        //System.out.println("---> Aire la plus grand : " + score + " cases, de type : " + type);
+        System.out.println("---> Aire la plus grand : " + score);
         System.out.println("=============== FIN DE LA PARTIE ===============");
     }
 
@@ -649,27 +650,27 @@ public class Board implements Cloneable{
      * @param max - score maximum
      * @return le type d'aire
      */
-    public String defineAreaType(int max) {
-        int maxX = 0;
-        int maxY = 0;
-        for (PointWithScore pws : listSwv) {
-            if (pws.getScore() == max) {
-                maxX = pws.getX();
-                maxY = pws.getY();
-            }
-        }
-        //System.out.println("ER : " + maxX + " : "+maxY);
-        if (maxX == 1) {
-            return "Colonne";
-        } else if (maxY == 1) {
-            return "Ligne";
-        }
-        if (maxX == maxY) {
-            return "Carre";
-        } else {
-            return "Rectangle";
-        }
-    }
+//    public String defineAreaType(int max) {
+//        int maxX = 0;
+//        int maxY = 0;
+//        for (PointWithScore pws : listSwv) {
+//            if (pws.getScore() == max) {
+//                maxX = pws.getX();
+//                maxY = pws.getY();
+//            }
+//        }
+//        //System.out.println("ER : " + maxX + " : "+maxY);
+//        if (maxX == 1) {
+//            return "Colonne";
+//        } else if (maxY == 1) {
+//            return "Ligne";
+//        }
+//        if (maxX == maxY) {
+//            return "Carre";
+//        } else {
+//            return "Rectangle";
+//        }
+//    }
 
     /**
      * Methode permettant de recuperer l'aire maximum d'un
@@ -720,21 +721,21 @@ public class Board implements Cloneable{
             } else {
                 int area;
                 int stackElement = stack.pop();
-                PointWithScore pws = new PointWithScore(new Point(0,0), 0);
+//                PointWithScore pws = new PointWithScore(new Point(0,0), 0);
                 if (stack.isEmpty()) {
                     area = columnSize[stackElement] * lineSize;
-                    pws.setX(lineSize);
-                    //System.out.println("Taille des lignes : " + lineSize);
+//                    pws.setX(lineSize);
+//                    System.out.println("Taille des lignes : " + lineSize);
                 } else {
                     area = columnSize[stackElement] * (lineSize - stack.peek() - 1);
-                    pws.setX(lineSize - stack.peek() - 1);
-                    //System.out.println("Taille des lignes : " + (lineSize - stack.peek() - 1));
+//                    pws.setX(lineSize - stack.peek() - 1);
+//                    System.out.println("Taille des lignes : " + (lineSize - stack.peek() - 1));
                 }
-                //System.out.println("Taille des colonnes : " + columnSize[x]);
-                //System.out.println("Aires : " + area);
-                pws.setScore(area); //Suivie des valeurs
-                pws.setY(columnSize[stackElement]);
-                this.listSwv.add(pws);
+//                System.out.println("Taille des colonnes : " + columnSize[x]);
+//                System.out.println("Aires : " + area);
+//                pws.setScore(area); //Suivie des valeurs
+//                pws.setY(columnSize[stackElement]);
+//                this.listSwv.add(pws);
                 maximum = Math.max(maximum, area); //Recuperation de la valeur maximum
             }
         }

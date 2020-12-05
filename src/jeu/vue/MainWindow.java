@@ -119,7 +119,8 @@ public class MainWindow extends JFrame implements ActionListener{
             System.exit(1);
         }
         this.getVueScore().getMovesRemaning().setText("<html><p>Nombre de coups <br>restants : " + this.getBoard().getNbMove() + "/" + Main.NB_MOVE_MAX_GUI+"</p></html>");
-        this.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.getBoard().defineAreaType(this.getBoard().evaluate()) + " de score : " + this.getBoard().evaluate()+"</p></html>");
+        //this.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.getBoard().defineAreaType(this.getBoard().evaluate()) + " de score : " + this.getBoard().evaluate()+"</p></html>");
+        this.getVueScore().getCurrentScore().setText("<html><p>Votre score est de <br>" + this.getBoard().evaluate()+"</p></html>");
         requestFocusInWindow();
     }
 
@@ -133,7 +134,8 @@ public class MainWindow extends JFrame implements ActionListener{
         this.vue.setBoard(this.board);
         this.vue.update();
         this.getVueScore().getMovesRemaning().setText("<html><p>Nombre de coups <br>restants : " + this.getBoard().getNbMove() + "/" + Main.NB_MOVE_MAX_GUI+"</p></html>");
-        this.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.getBoard().defineAreaType(this.getBoard().evaluate()) + " de score : " + this.getBoard().evaluate()+"</p></html>");
+        //this.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.getBoard().defineAreaType(this.getBoard().evaluate()) + " de score : " + this.getBoard().evaluate()+"</p></html>");
+        this.getVueScore().getCurrentScore().setText("<html><p>Votre score est de <br>" + this.getBoard().evaluate()+"</p></html>");
     }
 
     /*==============================*/

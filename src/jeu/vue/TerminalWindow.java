@@ -152,8 +152,9 @@ public class TerminalWindow {
      */
     private void displayScore(int nbMove, int actionChosen){
         int score = board.evaluate();
-        String type = board.defineAreaType(score);
-        System.out.println("---> Aire la plus grand : " + score + " cases, de type : " + type);
+        //String type = board.defineAreaType(score);
+        //System.out.println("---> Aire la plus grand : " + score + " cases, de type : " + type);
+        System.out.println("---> Aire la plus grand : " + score);
         System.out.println("---> Coups restant : " + (Main.NB_MOVE_MAX_TERMINAL - nbMove));
         System.out.println("---> Vous avez choisit le choix : " + actionChosen);
         System.out.println();

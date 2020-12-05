@@ -79,7 +79,8 @@ public class GUIController implements KeyListener, MouseListener{
             //System.out.println(this.mainWindow.getBoard().toString());
             this.mainWindow.getVue().update();
             this.mainWindow.getVueScore().getMovesRemaning().setText("<html><p>Nombre de coups <br>restants : " + this.mainWindow.getBoard().getNbMove() + "/" + Main.NB_MOVE_MAX_GUI+"</p></html>");
-            this.mainWindow.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.mainWindow.getBoard().defineAreaType(this.mainWindow.getBoard().evaluate()) + " de score : " + this.mainWindow.getBoard().evaluate()+"</p></html>");
+            //this.mainWindow.getVueScore().getCurrentScore().setText("<html><p>Votre score est un <br>" + this.mainWindow.getBoard().defineAreaType(this.mainWindow.getBoard().evaluate()) + " de score : " + this.mainWindow.getBoard().evaluate()+"</p></html>");
+            this.mainWindow.getVueScore().getCurrentScore().setText("<html><p>Votre score est de <br>" + this.mainWindow.getBoard().evaluate()+"</p></html>");
         }
     }
 

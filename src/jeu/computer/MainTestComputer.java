@@ -23,7 +23,7 @@ public class MainTestComputer {
 
         System.out.println("TEST SOLVER");
         Solver solver = new Solver();
-        solver.boardGenerator(8, 8, 5);
+        solver.boardGenerator(10, 10, 7); //8 8 6
         solver.execSolve(0);
 
     }

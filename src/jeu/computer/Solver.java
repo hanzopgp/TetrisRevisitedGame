@@ -83,7 +83,8 @@ public class Solver {
         boolean isInitialMove = false; //Ce booleen permet de savoir si le coup est un coup que l'on peut jouer hors du solver
         MoveAndScore bestGeneralMove = new MoveAndScore(new Move(null, ""), 0); //On initialise best
         if(depth != 0){ //Si nous somme en profondeur superieur a 0
-            for(Piece piece : new ArrayList<>(board.getListPiece())){ //Pour chaque piece
+            ArrayList<Piece> listPiece = new ArrayList<>(board.getListPiece());
+            for(Piece piece : listPiece){ //Pour chaque piece
                 for(Move move : board.getValidMoves(piece)){ //Pour chaque coups valides de chaque piece
                     this.cpt++; //Compteur nombre de noeud
                     if(bestPieceMove.getTypeMove().equals("none")){ //Si nous avons la configuration de depart
