@@ -56,8 +56,10 @@ Toujours a la racine du projet tapez : `java -jar dist/Tetris-0.1.jar`
 - Le solver n'étant pas optimisé un niveau de difficulté "SolverTest" a été créé pour pouvoir le tester et voir son fonctionnement.
 - Dans l'interface graphique le solveur joue coup par coup, alors que dans le terminal il joue coup par coup jusqu'a la fin de la partie.
 - Le solver n'utilise pas les rotations de base car cela ajoute beaucoup de temps d'attente pour la resolution.
+- Problème de fuite mémoire résolu après analyse avec VisualJM, amenant la suppresion de la classe PointWithScore et de l'affichage du type d'aire.
 
 ## Liens utiles :
 
 - https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller
 - https://www.geeksforgeeks.org/maximum-size-rectangle-binary-sub-matrix-1s/
+- https://visualvm.github.io/
