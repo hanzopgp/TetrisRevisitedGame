@@ -34,29 +34,11 @@ public class PieceT extends AbstractPiece {
     public void constructAllStates() {
         if(this.getWidth()%2 != 0) {
             for (int i = 1; i < this.getWidth()-1; i++) {
-                this.getState1().add(new Point(this.getCentralPiece().getX() + i, this.getCentralPiece().getY()));
-                this.getState2().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() + i));
-                this.getState3().add(new Point(this.getCentralPiece().getX() + i, this.getCentralPiece().getY()));
-                this.getState4().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() + i));
-
-                this.getState1().add(new Point(this.getCentralPiece().getX() - i, this.getCentralPiece().getY()));
-                this.getState2().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() - i));
-                this.getState3().add(new Point(this.getCentralPiece().getX() - i, this.getCentralPiece().getY()));
-                this.getState4().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() - i));
-
+                buildState(i);
             }
         }else{
             for (int i = 1; i < this.getWidth(); i++) {
-                this.getState1().add(new Point(this.getCentralPiece().getX() + i, this.getCentralPiece().getY()));
-                this.getState2().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() + i));
-                this.getState3().add(new Point(this.getCentralPiece().getX() + i, this.getCentralPiece().getY()));
-                this.getState4().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() + i));
-
-                this.getState1().add(new Point(this.getCentralPiece().getX() - i, this.getCentralPiece().getY()));
-                this.getState2().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() - i));
-                this.getState3().add(new Point(this.getCentralPiece().getX() - i, this.getCentralPiece().getY()));
-                this.getState4().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() - i));
-
+                buildState(i);
             }
         }
         for(int i=0;i<this.getHeight();i++){
@@ -65,5 +47,17 @@ public class PieceT extends AbstractPiece {
             this.getState3().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY()-i));
             this.getState4().add(new Point(this.getCentralPiece().getX()+i, this.getCentralPiece().getY()));
         }
+    }
+
+    private void buildState(int i) {
+        this.getState1().add(new Point(this.getCentralPiece().getX() + i, this.getCentralPiece().getY()));
+        this.getState2().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() + i));
+        this.getState3().add(new Point(this.getCentralPiece().getX() + i, this.getCentralPiece().getY()));
+        this.getState4().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() + i));
+
+        this.getState1().add(new Point(this.getCentralPiece().getX() - i, this.getCentralPiece().getY()));
+        this.getState2().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() - i));
+        this.getState3().add(new Point(this.getCentralPiece().getX() - i, this.getCentralPiece().getY()));
+        this.getState4().add(new Point(this.getCentralPiece().getX(), this.getCentralPiece().getY() - i));
     }
 }

@@ -15,13 +15,13 @@ import java.util.Scanner;
 public class Main {
 
     public static final int NB_DIFF_PIECE = 5; //Suivant le nombre de classe piece existant
-    public static int MAX_NB_PIECE_ON_BOARD = 26; //Attention le maximum est 26
+    public static int MAX_NB_PIECE_ON_BOARD = 15; //Attention le maximum est 26
     public static int NB_MOVE_MAX_TERMINAL = 50;
     public static int NB_MOVE_MAX_GUI = 50;
     public static int MIN_PIECE = 2; //taille min d'une piece aleatoire
     public static int MAX_PIECE = 3; //taille max d'une piece aleatoire
     public static String FILE_NAME = "save.txt";
-    public static int SOLVER_DEPTH = 4; //Profondeur 3 si utilise dans une grille et un nombre de piece inferieur au jeu normal
+    public static int SOLVER_DEPTH = 3; //Profondeur 3 si utilise dans une grille et un nombre de piece inferieur au jeu normal
     public static int SOLVER_DEPTH_GENERAL = 2; //Profondeur fonctionnement peu importe le mode de jeu
     public static boolean ROTATION_ACTIVATED_SOLVER = false; //Prise en compte des rotations dans le solver
     public static int NB_PIECE_IF_SOLVER = 6;

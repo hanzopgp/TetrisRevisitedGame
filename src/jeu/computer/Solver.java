@@ -48,17 +48,27 @@ public class Solver {
      * @param nbMove le nombre de moves restant avant d'utiliser le solver
      */
     public void execSolve(int nbMove){
-        System.out.println("------------ SOLVING ------------");
+        System.out.println("------------------------ SOLVING ------------------------");
+        int depth;
+        if(this.board.isSolverTest()){
+            depth = Main.SOLVER_DEPTH;
+        }else{
+            depth = Main.SOLVER_DEPTH_GENERAL;
+        }
         for(int i = 0; i < Main.NB_MOVE_MAX_GUI; i++){
-            System.out.println("------------ NOUVEAU COUP ------------");
+            System.out.println("------------------------ NOUVEAU COUP ------------------------");
+            long start = System.currentTimeMillis();
             MoveAndScore move;
-            if((Main.NB_MOVE_MAX_GUI - nbMove) >= Main.SOLVER_DEPTH){ //Ici on evite qu'en fin de partie, le solver joue en fonction de coups futurs qu'il ne pourra pas jouer car il ne restera plus de coups restants
-                move = this.solve(Main.SOLVER_DEPTH, board, new MoveAndScore(new Move(null, "none"), 0));
+            if((Main.NB_MOVE_MAX_GUI - nbMove) >= depth){ //Ici on evite qu'en fin de partie, le solver joue en fonction de coups futurs qu'il ne pourra pas jouer car il ne restera plus de coups restants
+                move = this.solve(depth, board, new MoveAndScore(new Move(null, "none"), 0));
             }else{ //Sinon on joue normalement
                 move = this.solve((Main.NB_MOVE_MAX_GUI - nbMove), board, new MoveAndScore(new Move(null, "none"), 0));
             }
             computeMove(move.getTypeMove(), board, move.getPiece());
+            long end = System.currentTimeMillis();
             nbMove++;
+            System.out.println("PROFONDEUR DE RECHERCHE : " + depth);
+            System.out.println("TEMPS MIT PAR LE SOLVER : " + (end-start)/1000 + "s");
             System.out.println("NOMBRE DE NOEUDS EXPLORES : " + this.cpt);
             System.out.println("NOMBRE DE COUPS RESTANTS : " + (Main.NB_MOVE_MAX_GUI - nbMove));
             //System.out.println("HASH PIECE : " + move.getPiece());

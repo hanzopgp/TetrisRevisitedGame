@@ -64,14 +64,9 @@ public class TerminalWindow {
                     this.board.saveBoard(nbSave , board.getSaveStorage());
                     break;
                 case 5 : //Resoudre la partie
-                    if(this.board.isSolverTest()){
-                        Solver solver = new Solver(this.board);
-                        solver.execSolve(this.board.getNbMove());
-                        isPlaying = false;
-                    }else{
-                        System.out.println("Solver indisponible en dehors du SolverTest !");
-                    }
-                    break;
+                    Solver solver = new Solver(this.board);
+                    solver.execSolve(this.board.getNbMove());
+                    isPlaying = false;
             }
         }
         this.board.gameOver();

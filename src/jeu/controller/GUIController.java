@@ -49,7 +49,7 @@ public class GUIController implements KeyListener, MouseListener{
                 }
                 board.translatePiece(board.tradDirection(move.getTypeMove()), move.getPiece());
                 board.setNbMove(board.getNbMove()+1);
-                System.out.println("FOUND ONE MOVE");
+                System.out.println("FOUND ONE MOVE !");
                 board.setSolving(false);
             }
             //Actions sur une piece selectionne
