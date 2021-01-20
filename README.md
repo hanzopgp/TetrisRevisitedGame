@@ -2,19 +2,11 @@
 
 ## Table des matières
 
-1. [Auteurs](#projet-conçu-par-)
-2. [Utilisation](#utilisation-)
-3. [Fonctionnement du jeu](#fonctionnement-du-jeu-)
-4. [Touches](#touches-)
-5. [Autres details](#autres-details-)
-6. [Liens utiles](#liens-utiles-)
-
-## Projet conçu par : 
-
-- Durand Enzo : 21510242
-- Leconte Thomas : 22008087
-- Robert Adrien : 21701370
-- Lepage Dylan : 21804570
+1. [Utilisation](#utilisation-)
+2. [Fonctionnement du jeu](#fonctionnement-du-jeu-)
+3. [Touches](#touches-)
+4. [Autres details](#autres-details-)
+5. [Liens utiles](#liens-utiles-)
 
 ## Utilisation :
 
