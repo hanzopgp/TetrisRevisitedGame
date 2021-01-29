@@ -2,11 +2,17 @@
 
 ## Table des matières
 
-1. [Utilisation](#utilisation-)
-2. [Fonctionnement du jeu](#fonctionnement-du-jeu-)
-3. [Touches](#touches-)
-4. [Autres details](#autres-details-)
-5. [Liens utiles](#liens-utiles-)
+1. [Presentation](#presentation-)
+2. [Utilisation](#utilisation-)
+3. [Fonctionnement du jeu](#fonctionnement-du-jeu-)
+4. [Touches](#touches-)
+5. [Autres details](#autres-details-)
+6. [Liens utiles](#liens-utiles-)
+
+## Présentation :
+
+Jeu ressemblant au tetris, seulement le but est de former le rectangle avec la plus grande aire avec un nombre de coups max. <br>
+L3 Informatique, note : ??/20.
 
 ## Utilisation :
 
