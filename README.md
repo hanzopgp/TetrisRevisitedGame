@@ -13,7 +13,7 @@
 
 <p align="center"><img src="img.png"></p>
 
-Jeu ressemblant au tetris, seulement le but est de former le rectangle avec la plus grande aire avec un nombre de coups max. <br>
+>Jeu ressemblant au tetris, seulement le but est de former le rectangle avec la plus grande aire avec un nombre de coups max. <br>
 L3 Informatique, note : 16/20.
 
 ## Utilisation :
